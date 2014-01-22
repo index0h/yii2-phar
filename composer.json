@@ -1,0 +1,29 @@
+{
+    "name": "index0h/yii-phar",
+    "description": "Phar builder based on Yii2",
+    "version": "0.0.1-alpha",
+    "type": "yii2-extension",
+    "keywords": ["yii", "phar", "yii-phar", "build", "yii-module", "module"],
+    "homepage": "https://github.com/index0h/yii-phar",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Roman Levishchenko",
+            "email": "index.0h@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/index0h/yii-phar/issues",
+        "source": "https://github.com/index0h/yii-phar"
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2-composer": "dev-master",
+        "yiisoft/yii2": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "index0h\\yii\\phar\\": ""
+        }
+    }
+}
