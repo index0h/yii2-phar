@@ -45,9 +45,7 @@ class BuildController extends Controller
             $this->addFiles();
             $this->addFolders();
             $this->addStub();
-
             $this->addCompress();
-
             $this->addSignature();
         } catch (\Exception $error) {
             unset($this->phar);
@@ -67,7 +65,7 @@ class BuildController extends Controller
      */
     protected function addCompress()
     {
-        echo '\nAdd compress';
+        echo "\nAdd compress";
         $configuration = $this->stringToArray($this->module->compress);
         foreach ($configuration as $compress) {
             if (in_array($compress, [\Phar::NONE, \Phar::GZ, \Phar::BZ2], true) === false) {
@@ -86,7 +84,7 @@ class BuildController extends Controller
      */
     protected function addFiles()
     {
-        echo '\nAdd files';
+        echo "\nAdd files";
         $configuration = $this->stringToArray($this->module->files);
         if (count($configuration) > 0) {
             foreach ($configuration as $file) {
@@ -112,7 +110,7 @@ class BuildController extends Controller
      */
     protected function addFolders()
     {
-        echo '\nAdd folders';
+        echo "\nAdd folders";
         $configuration = $this->stringToArray($this->module->folders);
         if (count($configuration) > 0) {
             foreach ($configuration as $folder) {
@@ -134,7 +132,7 @@ class BuildController extends Controller
      */
     protected function addSignature()
     {
-        echo '\nAdd signature';
+        echo "\nAdd signature";
         $signature = $this->module->signature;
         if ($signature === false) {
             return;
@@ -155,7 +153,7 @@ class BuildController extends Controller
      */
     protected function addStub()
     {
-        echo '\nAdd stub';
+        echo "\nAdd stub";
         if ($this->module->stub !== false) {
             $path = \Yii::getAlias($this->module->stub);
             if (file_exists($path) === false) {

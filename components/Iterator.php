@@ -87,6 +87,9 @@ class Iterator implements \Iterator
      */
     protected function isIgnored($file)
     {
+        if ($this->module->ignore === false) {
+            return $file;
+        }
         foreach ($this->module->ignore as $pattern) {
             if (preg_match("/{$pattern}/us", $file) > 0) {
                 return true;
@@ -104,6 +107,9 @@ class Iterator implements \Iterator
      */
     protected function minimizePHP($file)
     {
+        if ($this->module->minimizePHP === false) {
+            return $file;
+        }
         foreach ($this->module->minimizePHP as $pattern) {
             if (preg_match("/{$pattern}/us", $file) > 0) {
                 $path = tempnam(\Yii::getAlias('@runtime/yii-phar'), 'minimizePHP');

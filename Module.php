@@ -37,8 +37,8 @@ class Module extends \yii\base\Module
     /** @type string[] List of aliases to directories to compile. */
     public $folders = ['@app'];
 
-    /** @type string[] List of regexp patterns that must be ignored on build. */
-    public $ignore = ['.*app.phar'];
+    /** @type bool|string[] List of regexp patterns that must be ignored on build. */
+    public $ignore = ['\.(git|gitignore|svn|hg|hgignore)', '\.(travis|coveralls)\.yml'];
 
     /** @var bool|string[] Array of regexp patterns of files that files must be included after php_strip_whitespace. */
     public $minimizePHP = false;
