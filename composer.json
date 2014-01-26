@@ -23,7 +23,8 @@
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "dev-master",
-        "codeception/codeception": "*"
+        "codeception/codeception": "*",
+        "satooshi/php-coveralls": "dev-master"
     },
     "autoload": {
         "psr-4": {

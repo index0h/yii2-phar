@@ -1,0 +1,5 @@
+service_name: travic-ci
+
+src_dir: .
+json_path: tests/_log/coverage.json
+coverage_clover: tests/_log/coverage.xml
