@@ -8,32 +8,21 @@
 namespace index0h\yii\phar;
 
 use Yii;
+use yii\base\ActionEvent;
 
 /**
  * This is main class of Yii-Phar module.
- *
- * To use Yii-Phar, include as module to console application configuration like an example:
- *
- * ```php
- * return [
- * .....
- *     'modules' => [
- *         'phar' => ['class' => 'index0h\yii\phar\Module']
- *     ]
- * .....
- * ];
- * ```
- *
- * After installation you can run it from shell:
- *
- * ```sh
- * yii phar/build
- * ```
  *
  * @author Roman Levishchenko <index.0h@gmail.com>
  */
 class Module extends \yii\base\Module
 {
+    /** @type After action event name. */
+    const EVENT_AFTER_ACTION = 'afterAction';
+
+    /** @type Before action event name. */
+    const EVENT_BEFORE_ACTION = 'beforeAction';
+
     /** @type int[] Array of compress algorithms, \Phar::GZ, \Phar::BZ2. */
     public $compress = [];
 
@@ -42,16 +31,19 @@ class Module extends \yii\base\Module
      */
     public $controllerNamespace = 'index0h\yii\phar\controllers';
 
-    /** @type string[] List of files to compile. */
+    /** @type string[] List of aliases to files to compile. */
     public $files = ['@app/yii'];
 
-    /** @type string[] List of directories to compile. */
+    /** @type string[] List of aliases to directories to compile. */
     public $folders = ['@app'];
 
     /** @type string[] List of regexp patterns that must be ignored on build. */
     public $ignore = ['.*app.phar'];
 
-    /** @type string OpenSSL certificate, should be on \Phar::OPENSSL signature set. */
+    /** @var bool|string[] Array of regexp patterns of files that files must be included after php_strip_whitespace. */
+    public $minimizePHP = false;
+
+    /** @type string Alias to OpenSSL certificate, should be on \Phar::OPENSSL signature set. */
     public $openSSLPrivateKeyAlias = '@app/data/cert.pem';
 
     /** @type string Path to phar file save. */
@@ -63,9 +55,32 @@ class Module extends \yii\base\Module
     /** @type int|bool Signature of result phar file. */
     public $signature = \Phar::MD5;
 
-    /** @type string|bool Path alias to stub file, if false - will not be set. */
+    /** @type string|bool Alias to stub file, if false - will not be set. */
     public $stub = false;
 
-    /** @var bool|string[] Array of regular expressions that files must be included after php_strip_whitespace. */
-    public $minimizePHP = false;
+    /**
+     * @param \yii\base\Action $action Build action.
+     * @param mixed            $result Output of action.
+     */
+    public function afterAction($action, &$result)
+    {
+        $event = new ActionEvent($action);
+        $event->result = $result;
+        $this->trigger(self::EVENT_BEFORE_ACTION, $event);
+
+        unset($action->controller->phar);
+    }
+
+    /**
+     * @param \yii\base\Action $action Build action.
+     *
+     * @return bool
+     */
+    public function beforeAction($action)
+    {
+        $event = new ActionEvent($action);
+        $this->trigger(self::EVENT_BEFORE_ACTION, $event);
+
+        return true;
+    }
 }

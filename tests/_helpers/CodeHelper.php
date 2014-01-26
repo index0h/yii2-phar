@@ -9,6 +9,8 @@ namespace Codeception\Module;
 
 /**
  * CodeHelper class.
+ *
+ * @author Roman Levishchenko <index.0h@gmail.com>
  */
 class CodeHelper extends \Codeception\Module
 {

@@ -17,6 +17,8 @@ use Yii;
 
 /**
  * Tests for BuildController.
+ *
+ * @author Roman Levishchenko <index.0h@gmail.com>
  */
 class BuildControllerTest extends TestCase
 {
@@ -148,8 +150,7 @@ class BuildControllerTest extends TestCase
     {
         $this->cleanRuntime();
         $module = new Module('phar', null, $configuration);
-        $this->object = new BuildController('build', $module);
-        $this->object->actionIndex();
+        $module->runAction('build');
     }
 
     /**

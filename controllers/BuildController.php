@@ -10,6 +10,7 @@ namespace index0h\yii\phar\controllers;
 use index0h\yii\phar\components\Iterator;
 use yii\base\InvalidConfigException;
 use yii\console\Controller;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 
 /**
@@ -27,10 +28,14 @@ class BuildController extends Controller
 
     /**
      * Action of building phar archive.
+     *
+     * @param string|bool $configFile Path to external file configuration.
      */
-    public function actionIndex()
+    public function actionIndex($configFile = false)
     {
         echo "Start building PHAR package...\n";
+
+        $this->loadConfiguration($configFile);
 
         $this->clean(false);
 
@@ -40,41 +45,19 @@ class BuildController extends Controller
             $this->addFiles();
             $this->addFolders();
             $this->addStub();
+
             $this->addCompress();
+
             $this->addSignature();
         } catch (\Exception $error) {
             unset($this->phar);
+            $this->clean();
             throw $error;
         }
 
-        unset($this->phar);
         $this->clean();
 
         echo "Finish\n";
-    }
-
-    /**
-     * Clean yii-phar runtime directory.
-     *
-     * @param bool $runtimeOnly On false - remove phar archive.
-     */
-    protected function clean($runtimeOnly = true)
-    {
-        $runtime = \Yii::getAlias('@runtime/yii-phar');
-        if (file_exists($runtime) === true) {
-            FileHelper::removeDirectory($runtime);
-        }
-        mkdir($runtime, 0777);
-
-        if ($runtimeOnly === true) {
-            return;
-        }
-
-        foreach (['', '.gz', '.bz2'] as $extension) {
-            if (file_exists($this->module->path . $extension) === true) {
-                \Phar::unlinkArchive($this->module->path . $extension);
-            }
-        }
     }
 
     /**
@@ -84,6 +67,7 @@ class BuildController extends Controller
      */
     protected function addCompress()
     {
+        echo '\nAdd compress';
         $configuration = $this->stringToArray($this->module->compress);
         foreach ($configuration as $compress) {
             if (in_array($compress, [\Phar::NONE, \Phar::GZ, \Phar::BZ2], true) === false) {
@@ -102,6 +86,7 @@ class BuildController extends Controller
      */
     protected function addFiles()
     {
+        echo '\nAdd files';
         $configuration = $this->stringToArray($this->module->files);
         if (count($configuration) > 0) {
             foreach ($configuration as $file) {
@@ -127,6 +112,7 @@ class BuildController extends Controller
      */
     protected function addFolders()
     {
+        echo '\nAdd folders';
         $configuration = $this->stringToArray($this->module->folders);
         if (count($configuration) > 0) {
             foreach ($configuration as $folder) {
@@ -140,22 +126,6 @@ class BuildController extends Controller
     }
 
     /**
-     * Return minimized content of file though php_strip_whitespace.
-     *
-     * @return string
-     */
-    protected function minimizePHP($path)
-    {
-        $configuration = $this->stringToArray($this->module->minimizePHP);
-        foreach ($configuration as $pattern) {
-            if (preg_match("/{$pattern}/us", $path) > 0) {
-                return php_strip_whitespace($path);
-            }
-        }
-        return file_get_contents($path);
-    }
-
-    /**
      * Add signature to phar file.
      *
      * If signature type is \Phar::OPENSSL - there must be configured openSSLPrivateKeyAlias.
@@ -164,6 +134,7 @@ class BuildController extends Controller
      */
     protected function addSignature()
     {
+        echo '\nAdd signature';
         $signature = $this->module->signature;
         if ($signature === false) {
             return;
@@ -184,6 +155,7 @@ class BuildController extends Controller
      */
     protected function addStub()
     {
+        echo '\nAdd stub';
         if ($this->module->stub !== false) {
             $path = \Yii::getAlias($this->module->stub);
             if (file_exists($path) === false) {
@@ -191,6 +163,73 @@ class BuildController extends Controller
             }
             $this->phar->setStub(file_get_contents($path));
         }
+    }
+
+    /**
+     * Clean yii-phar runtime directory.
+     *
+     * @param bool $runtimeOnly On false - remove phar archive.
+     */
+    protected function clean($runtimeOnly = true)
+    {
+        $runtime = \Yii::getAlias('@runtime/yii-phar');
+        if (file_exists($runtime) === true) {
+            FileHelper::removeDirectory($runtime);
+        }
+        mkdir($runtime, 0777);
+
+        if ($runtimeOnly === true) {
+            return;
+        }
+
+        $path = \Yii::getAlias($this->module->path);
+
+        foreach (['', '.gz', '.bz2'] as $extension) {
+            if (file_exists("{$path}/{$extension}") === true) {
+                \Phar::unlinkArchive("{$path}/{$extension}");
+            }
+        }
+    }
+
+    /**
+     * Loads and update module default configuration.
+     *
+     * @param string|bool $configFile Path to external file configuration.
+     *
+     * @throws \yii\base\InvalidConfigException On unkniwn option in configuration file.
+     */
+    protected function loadConfiguration($configFile = false)
+    {
+        if ($configFile === false) {
+            return;
+        }
+        echo '\nLoad configuration';
+
+        $configuration = require $configFile;
+
+        foreach ($configuration as $name => $value) {
+            if ((property_exists($this->module, $name) === true) || ($this->module->canSetProperty($name) == true)) {
+                $this->$name = $value;
+            } else {
+                throw new InvalidConfigException("Invalid configuration. Unknown configuration option '{$name}'");
+            }
+        }
+    }
+
+    /**
+     * Return minimized content of file though php_strip_whitespace.
+     *
+     * @return string
+     */
+    protected function minimizePHP($path)
+    {
+        $configuration = $this->stringToArray($this->module->minimizePHP);
+        foreach ($configuration as $pattern) {
+            if (preg_match("/{$pattern}/us", $path) > 0) {
+                return php_strip_whitespace($path);
+            }
+        }
+        return file_get_contents($path);
     }
 
     /**

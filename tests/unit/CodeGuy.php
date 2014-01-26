@@ -23,8 +23,9 @@ use Codeception\Module\CodeHelper;
  * @method void offsetSet($offset, $value)
  * @method void offsetExists($offset)
  * @method void offsetUnset($offset)
+ *
+ * @author Roman Levishchenko <index.0h@gmail.com>
 */
-
 class CodeGuy extends \Codeception\AbstractGuy
 {
 
