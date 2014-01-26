@@ -12,4 +12,4 @@ script:
   - make test
 
 after_script:
-  - php vendor/bin/coveralls -v
+  - php vendor/bin/coveralls -vvv --exclude-no-stmt
