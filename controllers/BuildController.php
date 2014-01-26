@@ -55,7 +55,7 @@ class BuildController extends Controller
 
         $this->clean();
 
-        echo "Finish\n";
+        echo "\n\nFinish\n";
     }
 
     /**
