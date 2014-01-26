@@ -102,7 +102,8 @@ class Iterator implements \Iterator
      *
      * @return string
      */
-    protected function minimizePHP($file) {
+    protected function minimizePHP($file)
+    {
         foreach ($this->module->minimizePHP as $pattern) {
             if (preg_match("/{$pattern}/us", $file) > 0) {
                 $path = tempnam(\Yii::getAlias('@runtime/yii-phar'), 'minimizePHP');
