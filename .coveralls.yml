@@ -1,4 +1,4 @@
-service_name: travic-ci
+service_name: travis-ci
 
 src_dir: .
 json_path: tests/_log/coverage.json
