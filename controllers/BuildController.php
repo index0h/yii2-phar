@@ -10,6 +10,7 @@ namespace index0h\yii\phar\controllers;
 use index0h\yii\phar\components\Iterator;
 use yii\base\InvalidConfigException;
 use yii\console\Controller;
+use yii\helpers\FileHelper;
 
 /**
  * Phar builder command.
@@ -21,6 +22,9 @@ class BuildController extends Controller
     /** @type \index0h\yii\phar\Module Link to main module object. */
     public $module;
 
+    /** @type \Phar Phar object. */
+    public $phar;
+
     /**
      * Action of building phar archive.
      */
@@ -28,36 +32,65 @@ class BuildController extends Controller
     {
         echo "Start building PHAR package...\n";
 
-        if (is_file($this->module->path)) {
-            unlink($this->module->path);
+        $this->clean(false);
+
+        $this->phar = new \Phar(\Yii::getAlias($this->module->path), 0, $this->module->pharName);
+
+        try {
+            $this->addFiles();
+            $this->addFolders();
+            $this->addStub();
+            $this->addCompress();
+            $this->addSignature();
+        } catch (\Exception $error) {
+            unset($this->phar);
+            throw $error;
         }
 
-        $phar = new \Phar($this->module->path, 0, $this->module->pharName);
-
-        $this->addFiles($phar);
-        $this->addFolders($phar);
-        $this->addStub($phar);
-        $this->addCompress($phar);
-        $this->addSignature($phar);
+        unset($this->phar);
+        $this->clean();
 
         echo "Finish\n";
     }
 
     /**
-     * Create compressed copies of phar file.
+     * Clean yii-phar runtime directory.
      *
-     * @param \Phar $phar Phar object.
+     * @param bool $runtimeOnly On false - remove phar archive.
+     */
+    protected function clean($runtimeOnly = true)
+    {
+        $runtime = \Yii::getAlias('@runtime/yii-phar');
+        if (file_exists($runtime) === true) {
+            FileHelper::removeDirectory($runtime);
+        }
+        mkdir($runtime, 0777);
+
+        if ($runtimeOnly === true) {
+            return;
+        }
+
+        foreach (['', '.gz', '.bz2'] as $extension) {
+            if (file_exists($this->module->path . $extension) === true) {
+                \Phar::unlinkArchive($this->module->path . $extension);
+            }
+        }
+    }
+
+    /**
+     * Create compressed copies of phar file.
      *
      * @throws \yii\base\InvalidConfigException On wrong compress type set (index0h\yii\phar\Module::compress).
      */
-    protected function addCompress($phar)
+    protected function addCompress()
     {
-        foreach ($this->module->compress as $compress) {
+        $configuration = $this->stringToArray($this->module->compress);
+        foreach ($configuration as $compress) {
+            if (in_array($compress, [\Phar::NONE, \Phar::GZ, \Phar::BZ2], true) === false) {
+                throw new InvalidConfigException("Invalid configuration. Unknown compress type '{$compress}'.");
+            }
             if (\Phar::canCompress($compress)) {
-                if (in_array($compress, [\Phar::NONE, \Phar::GZ, \Phar::BZ2]) === false) {
-                    throw new InvalidConfigException("Invalid configuration. Unknown compress type '{$compress}'.");
-                }
-                $phar->compress($compress);
+                $this->phar->compress($compress);
             }
         }
     }
@@ -65,19 +98,24 @@ class BuildController extends Controller
     /**
      * Add files to phar file.
      *
-     * @param \Phar $phar Phar object.
-     *
      * @throws \yii\base\InvalidConfigException On wrong files list set (index0h\yii\phar\Module::files).
      */
-    protected function addFiles($phar)
+    protected function addFiles()
     {
-        if (count($this->module->files) > 0) {
-            foreach ($this->module->files as $file) {
+        $configuration = $this->stringToArray($this->module->files);
+        if (count($configuration) > 0) {
+            foreach ($configuration as $file) {
                 $path = \Yii::getAlias($file);
                 if (file_exists($path) === false) {
                     throw new InvalidConfigException("Invalid configuration. File '{$path}' does not exists.");
                 }
-                $phar->addFile($path, basename($path));
+                $relative = basename($path);
+                if ($this->module->minimizePHP === false) {
+                    $this->phar->addFile($path, $relative);
+                } else {
+                    $content = $this->minimizePHP($path);
+                    $this->phar->addFromString($relative, $content);
+                }
             }
         }
     }
@@ -85,21 +123,36 @@ class BuildController extends Controller
     /**
      * Add folders to phar file.
      *
-     * @param \Phar $phar Phar object.
-     *
      * @throws \yii\base\InvalidConfigException On wrong folders list set (index0h\yii\phar\Module::folders).
      */
-    protected function addFolders($phar)
+    protected function addFolders()
     {
-        if (count($this->module->folders) > 0) {
-            foreach ($this->module->folders as $folder) {
+        $configuration = $this->stringToArray($this->module->folders);
+        if (count($configuration) > 0) {
+            foreach ($configuration as $folder) {
                 $path = \Yii::getAlias($folder);
                 if (file_exists($path) === false) {
                     throw new InvalidConfigException("Invalid configuration. Folder '{$path}' does not exists.");
                 }
-                $phar->buildFromIterator(new Iterator($path, $this->module));
+                $this->phar->buildFromIterator(new Iterator($path, $this->module));
             }
         }
+    }
+
+    /**
+     * Return minimized content of file though php_strip_whitespace.
+     *
+     * @return string
+     */
+    protected function minimizePHP($path)
+    {
+        $configuration = $this->stringToArray($this->module->minimizePHP);
+        foreach ($configuration as $pattern) {
+            if (preg_match("/{$pattern}/us", $path) > 0) {
+                return php_strip_whitespace($path);
+            }
+        }
+        return file_get_contents($path);
     }
 
     /**
@@ -107,28 +160,18 @@ class BuildController extends Controller
      *
      * If signature type is \Phar::OPENSSL - there must be configured openSSLPrivateKeyAlias.
      *
-     * @param \Phar $phar Phar object.
-     *
      * @throws \yii\base\InvalidConfigException On wrong signature type set (index0h\yii\phar\Module::signature).
-     *     On wrong OpenSSL certificate file set (index0h\yii\phar\Module::openSSLPrivateKeyAlias).
      */
-    protected function addSignature($phar)
+    protected function addSignature()
     {
         $signature = $this->module->signature;
         if ($signature === false) {
             return;
         }
-        if (in_array($signature, array(\Phar::MD5, \Phar::SHA1, \Phar::SHA256, \Phar::SHA512))) {
-            $phar->setSignatureAlgorithm($signature);
+        if (in_array($signature, [\Phar::MD5, \Phar::SHA1, \Phar::SHA256, \Phar::SHA512], true) === true) {
+            $this->phar->setSignatureAlgorithm($signature);
         } elseif ($signature === \Phar::OPENSSL) {
-            $path = \Yii::getAlias($this->module->openSSLPrivateKeyAlias);
-            if (file_exists($path) === false) {
-                throw new InvalidConfigException("Invalid configuration. Private key '{$path}' does not exists.");
-            }
-            $OpenSSLPrivateKey = openssl_get_privatekey(file_get_contents($path));
-            $OpenSSLPKey = '';
-            openssl_pkey_export($OpenSSLPrivateKey, $OpenSSLPKey);
-            $phar->setSignatureAlgorithm(\Phar::OPENSSL, $OpenSSLPKey);
+            $this->setOpenSSLSignature();
         } else {
             throw new InvalidConfigException("Invalid configuration. Unknown signature type '{$signature}'.");
         }
@@ -137,18 +180,50 @@ class BuildController extends Controller
     /**
      * Add stub from file to phar file.
      *
-     * @param \Phar $phar Phar object.
-     *
      * @throws \yii\base\InvalidConfigException On wrong stub file set (index0h\yii\phar\Module::stub).
      */
-    protected function addStub($phar)
+    protected function addStub()
     {
         if ($this->module->stub !== false) {
             $path = \Yii::getAlias($this->module->stub);
             if (file_exists($path) === false) {
                 throw new InvalidConfigException("Invalid configuration. Stub file '{$path}' does not exists.");
             }
-            $phar->setStub($path);
+            $this->phar->setStub(file_get_contents($path));
         }
+    }
+
+    /**
+     * Set OpenSSL signature and creating public key file.
+     *
+     * @throws \yii\base\InvalidConfigException
+     *     On wrong OpenSSL certificate file set (index0h\yii\phar\Module::openSSLPrivateKeyAlias).
+     */
+    protected function setOpenSSLSignature()
+    {
+        $path = \Yii::getAlias($this->module->openSSLPrivateKeyAlias);
+        if (file_exists($path) === false) {
+            throw new InvalidConfigException("Invalid configuration. Private key '{$path}' does not exists.");
+        }
+
+        $pemFile = file_get_contents($path);
+
+        $resource = openssl_get_privatekey($pemFile);
+        $privateKey = '';
+        openssl_pkey_export($resource, $privateKey);
+        $this->phar->setSignatureAlgorithm(\Phar::OPENSSL, $privateKey);
+    }
+
+    /**
+     * Converts string configurations to array.
+     *
+     * @return array
+     */
+    protected function stringToArray($config)
+    {
+        if (gettype($config) === 'string') {
+            return [$config];
+        }
+        return $config;
     }
 }

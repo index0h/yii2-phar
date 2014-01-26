@@ -88,11 +88,29 @@ class Iterator implements \Iterator
     protected function isIgnored($file)
     {
         foreach ($this->module->ignore as $pattern) {
-            if (preg_match("/{$pattern}/u", $file) !== false) {
+            if (preg_match("/{$pattern}/us", $file) > 0) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Compress php files through php_strip_whitespace.
+     *
+     * @param string $file Real path to file.
+     *
+     * @return string
+     */
+    protected function minimizePHP($file) {
+        foreach ($this->module->minimizePHP as $pattern) {
+            if (preg_match("/{$pattern}/us", $file) > 0) {
+                $path = tempnam(\Yii::getAlias('@runtime/yii-phar'), 'minimizePHP');
+                file_put_contents($path, php_strip_whitespace($file));
+                return $path;
+            }
+        }
+        return $file;
     }
 
     /**
@@ -104,10 +122,11 @@ class Iterator implements \Iterator
     {
         foreach (glob($path . '/*') as $file) {
             if ($this->isIgnored($file) === true) {
-                return;
+                continue;
             }
             $relative = substr($file, $this->basePathLength);
-            if (is_dir($file)) {
+            $file = $this->minimizePHP($file);
+            if (is_dir($file) == true) {
                 $this->scan($file);
             } else {
                 $this->files[] = array($relative, $file);

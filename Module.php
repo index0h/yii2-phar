@@ -52,7 +52,7 @@ class Module extends \yii\base\Module
     public $ignore = ['.*app.phar'];
 
     /** @type string OpenSSL certificate, should be on \Phar::OPENSSL signature set. */
-    public $openSSLPrivateKeyAlias = '@app/data/certificate.pem';
+    public $openSSLPrivateKeyAlias = '@app/data/cert.pem';
 
     /** @type string Path to phar file save. */
     public $path = '@app/app.phar';
@@ -65,4 +65,7 @@ class Module extends \yii\base\Module
 
     /** @type string|bool Path alias to stub file, if false - will not be set. */
     public $stub = false;
+
+    /** @var bool|string[] Array of regular expressions that files must be included after php_strip_whitespace. */
+    public $minimizePHP = false;
 }

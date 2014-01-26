@@ -21,6 +21,10 @@
         "yiisoft/yii2-composer": "dev-master",
         "yiisoft/yii2": "dev-master"
     },
+    "require-dev": {
+        "yiisoft/yii2-codeception": "dev-master",
+        "codeception/codeception": "*"
+    },
     "autoload": {
         "psr-4": {
             "index0h\\yii\\phar\\": ""
