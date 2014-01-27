@@ -10,7 +10,6 @@ namespace index0h\yii\phar\controllers;
 use index0h\yii\phar\components\Iterator;
 use yii\base\InvalidConfigException;
 use yii\console\Controller;
-use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 
 /**
@@ -30,6 +29,8 @@ class BuildController extends Controller
      * Action of building phar archive.
      *
      * @param string|bool $configFile Path to external file configuration.
+     *
+     * @throws \Exception Probably wrong configuration or no rights.
      */
     public function actionIndex($configFile = false)
     {
@@ -48,6 +49,7 @@ class BuildController extends Controller
             $this->addCompress();
             $this->addSignature();
         } catch (\Exception $error) {
+            // Probably wrong configuration or no rights.
             unset($this->phar);
             $this->clean();
             throw $error;

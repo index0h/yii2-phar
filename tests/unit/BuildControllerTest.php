@@ -7,7 +7,6 @@
 
 namespace index0h\yii\phar\tests\unit;
 
-use index0h\yii\phar\controllers\BuildController;
 use index0h\yii\phar\Module;
 use yii\base\InvalidConfigException;
 use yii\codeception\TestCase;
@@ -22,14 +21,18 @@ use Yii;
  */
 class BuildControllerTest extends TestCase
 {
-
     /** @type \index0h\yii\phar\controllers\BuildController Testing object. */
     public $object;
 
     /** @type array array of basic test configuration. */
     protected $configuration = [
         'compress' => [\Phar::GZ, \Phar::BZ2],
-        'files' => ['@tests/_data/include.php', '@tests/_data/notInclude.md', '@tests/_data/minimize.php'],
+        'files' => [
+            '@tests/_data/include.php',
+            '@tests/_data/notInclude.md',
+            '@tests/_data/minimize.php',
+            '@tests/_data/realpath.php'
+        ],
         'folders' => ['@tests/_data/include/', '@tests/_data/notInclude/'],
         'ignore' => ['.*notInclude.*'],
         'openSSLPrivateKeyAlias' => '@tests/_data/private.pem',
@@ -52,9 +55,11 @@ class BuildControllerTest extends TestCase
             'include/subdir/file.php',
             'include/include.php',
             'include/minimize.php',
+            'include/realpath.php',
             'include.php',
             'notInclude.md',
-            'minimize.php'
+            'minimize.php',
+            'realpath.php'
         ];
         $prefix = $this->getPathPrefix() . '/extract';
         foreach ($expected as $file) {
@@ -82,6 +87,19 @@ class BuildControllerTest extends TestCase
         foreach (['', '.gz', '.bz2'] as $extension) {
             $this->assertFileExists("{$prefix}/test.phar{$extension}");
         }
+    }
+
+    /**
+     * Checks that all realpath files are fixed.
+     */
+    public function testFixPHP()
+    {
+        $expected = trim("<?php\necho ltrim(__DIR__);");
+        $actual = trim(file_get_contents(\Yii::getAlias('@tests/_runtime/phar/extract/realpath.php')));
+        $actualTwo = trim(file_get_contents(\Yii::getAlias('@tests/_runtime/phar/extract/include/realpath.php')));
+
+        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected, $actualTwo);
     }
 
     /**

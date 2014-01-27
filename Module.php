@@ -17,10 +17,10 @@ use yii\base\ActionEvent;
  */
 class Module extends \yii\base\Module
 {
-    /** @type After action event name. */
+    /** @type string After action event name. */
     const EVENT_AFTER_ACTION = 'afterAction';
 
-    /** @type Before action event name. */
+    /** @type string Before action event name. */
     const EVENT_BEFORE_ACTION = 'beforeAction';
 
     /** @type int[] Array of compress algorithms, \Phar::GZ, \Phar::BZ2. */
@@ -57,6 +57,12 @@ class Module extends \yii\base\Module
 
     /** @type string|bool Alias to stub file, if false - will not be set. */
     public $stub = false;
+
+    /** @type string[]|bool List of regexp patterns of file names that must be fixed by fixPHPRules patterns. */
+    public $fixPHP = ['realpath'];
+
+    /** @type array List of regexp patterns that must be fixed in php files. */
+    public $fixPHPRules = ['realpath\(' => 'ltrim('];
 
     /**
      * @param \yii\base\Action $action Build action.

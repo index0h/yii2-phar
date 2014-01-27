@@ -79,6 +79,54 @@ class Iterator implements \Iterator
     }
 
     /**
+     * @param string $file     Current path to file (could be tmp).
+     * @param string $basePath First path to file.
+     *
+     * @return string
+     */
+    protected function fixPHP($file, $basePath)
+    {
+        if ($this->module->fixPHP === false) {
+            return $file;
+        }
+        foreach ($this->module->fixPHP as $pattern) {
+            if (preg_match("/{$pattern}/us", $basePath) > 0) {
+                list($content, $isUpdated) = $this->fixPHPContent($file);
+
+                if ($isUpdated === false) {
+                    return $file;
+                }
+
+                $path = tempnam(\Yii::getAlias('@runtime/yii-phar'), 'fixPHP');
+
+                file_put_contents($path, $content);
+                return $path;
+            }
+        }
+        return $file;
+    }
+
+    /**
+     * @param string $file Current path to file.
+     *
+     * @return array
+     */
+    protected function fixPHPContent($file)
+    {
+        $content = file_get_contents($file);
+        $patterns = [];
+        $replacements = [];
+
+        foreach ($this->module->fixPHPRules as $from => $to) {
+            $patterns[] = "/{$from}/us";
+            $replacements[] = $to;
+        }
+
+        $newContent = preg_replace($patterns, $replacements, $content);
+        return [$newContent, ($newContent !== $content)];
+    }
+
+    /**
      * Check if file is ignored by (index0h\yii\phar\Module::ignore).
      *
      * @param string $file Path to found file or folder.
@@ -101,17 +149,18 @@ class Iterator implements \Iterator
     /**
      * Compress php files through php_strip_whitespace.
      *
-     * @param string $file Real path to file.
+     * @param string $file     Current path to file (could be tmp).
+     * @param string $basePath First path to file.
      *
      * @return string
      */
-    protected function minimizePHP($file)
+    protected function minimizePHP($file, $basePath)
     {
         if ($this->module->minimizePHP === false) {
             return $file;
         }
         foreach ($this->module->minimizePHP as $pattern) {
-            if (preg_match("/{$pattern}/us", $file) > 0) {
+            if (preg_match("/{$pattern}/us", $basePath) > 0) {
                 $path = tempnam(\Yii::getAlias('@runtime/yii-phar'), 'minimizePHP');
                 file_put_contents($path, php_strip_whitespace($file));
                 return $path;
@@ -131,8 +180,11 @@ class Iterator implements \Iterator
             if ($this->isIgnored($file) === true) {
                 continue;
             }
+            $basePath = $file;
             $relative = substr($file, $this->basePathLength);
-            $file = $this->minimizePHP($file);
+            $file = $this->minimizePHP($file, $basePath);
+            $file = $this->fixPHP($file, $basePath);
+
             if (is_dir($file) == true) {
                 $this->scan($file);
             } else {
