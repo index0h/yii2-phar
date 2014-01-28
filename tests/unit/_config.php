@@ -8,7 +8,6 @@
 return [
     'id' => 'basic',
     'basePath' => \Yii::getAlias('@tests'),
-    'extensions' => require \Yii::getAlias('@tests/../vendor/yiisoft/extensions.php'),
     'runtimePath' => \Yii::getAlias('@tests/_runtime'),
     'components' => [
         'log' => [
