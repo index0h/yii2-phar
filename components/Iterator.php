@@ -34,7 +34,7 @@ class Iterator implements \Iterator
     {
         $this->module = $module;
         $basePath = self::realPath($path);
-        $this->basePathLength = strlen(self::realPath($basePath . '/../'));
+        $this->basePathLength = strlen(self::realPath($basePath . DIRECTORY_SEPARATOR . '..'));
         $this->scan($basePath);
     }
 
@@ -176,7 +176,7 @@ class Iterator implements \Iterator
      */
     protected function scan($path)
     {
-        foreach (glob($path . '/*') as $file) {
+        foreach (glob($path . DIRECTORY_SEPARATOR .  '*') as $file) {
             if ($this->isIgnored($file) === true) {
                 continue;
             }

@@ -201,8 +201,9 @@ class BuildController extends Controller
         $path = \Yii::getAlias($this->module->path);
 
         foreach (['', '.gz', '.bz2'] as $extension) {
-            if (file_exists("{$path}/{$extension}") === true) {
-                \Phar::unlinkArchive("{$path}/{$extension}");
+            $fullPath = $path . DIRECTORY_SEPARATOR . $extension;
+            if (file_exists($fullPath) === true) {
+                \Phar::unlinkArchive($fullPath);
             }
         }
     }

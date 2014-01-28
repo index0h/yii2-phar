@@ -52,19 +52,32 @@ class BuildControllerTest extends TestCase
     public function testAllFilesExist()
     {
         $expected = [
-            'include/subdir/file.php',
-            'include/include.php',
-            'include/minimize.php',
-            'include/realpath.php',
+            'include' . DIRECTORY_SEPARATOR . 'subdir' . DIRECTORY_SEPARATOR . 'file.php',
+            'include' . DIRECTORY_SEPARATOR . 'include.php',
+            'include' . DIRECTORY_SEPARATOR . 'minimize.php',
+            'include' . DIRECTORY_SEPARATOR . 'realpath.php',
             'include.php',
             'notInclude.md',
             'minimize.php',
             'realpath.php'
         ];
-        $prefix = $this->getPathPrefix() . '/extract';
+        $prefix = $this->getPathPrefix() . DIRECTORY_SEPARATOR . 'extract';
         foreach ($expected as $file) {
-            $this->assertFileExists("{$prefix}/{$file}");
+            $this->assertFileExists($prefix . DIRECTORY_SEPARATOR . $file);
         }
+    }
+
+    /**
+     * Checks that all realpath files are fixed.
+     */
+    public function testFixPHP()
+    {
+        $expected = trim("<?php\necho ltrim(__DIR__);");
+        $actual = trim(file_get_contents(\Yii::getAlias('@tests/_runtime/phar/extract/realpath.php')));
+        $actualTwo = trim(file_get_contents(\Yii::getAlias('@tests/_runtime/phar/extract/include/realpath.php')));
+
+        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected, $actualTwo);
     }
 
     /**
@@ -85,21 +98,8 @@ class BuildControllerTest extends TestCase
     {
         $prefix = $this->getPathPrefix();
         foreach (['', '.gz', '.bz2'] as $extension) {
-            $this->assertFileExists("{$prefix}/test.phar{$extension}");
+            $this->assertFileExists($prefix . DIRECTORY_SEPARATOR . 'test.phar' . $extension);
         }
-    }
-
-    /**
-     * Checks that all realpath files are fixed.
-     */
-    public function testFixPHP()
-    {
-        $expected = trim("<?php\necho ltrim(__DIR__);");
-        $actual = trim(file_get_contents(\Yii::getAlias('@tests/_runtime/phar/extract/realpath.php')));
-        $actualTwo = trim(file_get_contents(\Yii::getAlias('@tests/_runtime/phar/extract/include/realpath.php')));
-
-        $this->assertEquals($expected, $actual);
-        $this->assertEquals($expected, $actualTwo);
     }
 
     /**
@@ -108,7 +108,7 @@ class BuildControllerTest extends TestCase
     public function testStub()
     {
         $prefix = $this->getPathPrefix();
-        $phar = new \Phar("{$prefix}/test.phar");
+        $phar = new \Phar($prefix . DIRECTORY_SEPARATOR . 'test.phar');
 
         $expected = trim(preg_replace('/\s+/s', ' ', file_get_contents(\Yii::getAlias('@tests/_data/stub.php'))));
         $actual = trim(preg_replace('/\s+/s', ' ', $phar->getStub()));
@@ -149,8 +149,9 @@ class BuildControllerTest extends TestCase
     {
         $prefix = $this->getPathPrefix();
         foreach (['', '.gz', '.bz2'] as $extension) {
-            if (file_exists("{$prefix}/test.phar{$extension}") === true) {
-                \Phar::unlinkArchive("{$prefix}/test.phar{$extension}");
+            $fullPath = $prefix . DIRECTORY_SEPARATOR . 'test.phar' . $extension;
+            if (file_exists($fullPath) === true) {
+                \Phar::unlinkArchive($fullPath);
             }
         }
 
@@ -177,8 +178,8 @@ class BuildControllerTest extends TestCase
     protected function extract()
     {
         $prefix = $this->getPathPrefix();
-        $phar = new \Phar("{$prefix}/test.phar");
-        $phar->extractTo("$prefix/extract/");
+        $phar = new \Phar($prefix . DIRECTORY_SEPARATOR . 'test.phar');
+        $phar->extractTo($prefix . DIRECTORY_SEPARATOR . 'extract');
     }
 
     /**
