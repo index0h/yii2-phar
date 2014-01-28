@@ -95,12 +95,28 @@ class BuildController extends Controller
                     throw new InvalidConfigException("Invalid configuration. File '{$path}' does not exists.");
                 }
                 $relative = basename($path);
-                if ($this->module->minimizePHP === false) {
-                    $this->phar->addFile($path, $relative);
-                } else {
+                if ($this->module->minimizePHP !== false) {
                     $content = $this->minimizePHP($path);
-                    $this->phar->addFromString($relative, $content);
+                } else {
+                    $content = file_get_contents($path);
                 }
+                if ($this->module->fixPHP !== false) {
+                    foreach ($this->module->fixPHP as $pattern) {
+                        if (preg_match("/{$pattern}/us", $path) > 0) {
+                            $patterns = [];
+                            $replacements = [];
+
+                            foreach ($this->module->fixPHPRules as $from => $to) {
+                                $patterns[] = "/{$from}/us";
+                                $replacements[] = $to;
+                            }
+
+                            $content = preg_replace($patterns, $replacements, $content);
+                        }
+                    }
+                }
+
+                $this->phar->addFromString($relative, $content);
             }
         }
     }
@@ -219,6 +235,8 @@ class BuildController extends Controller
     /**
      * Return minimized content of file though php_strip_whitespace.
      *
+     * @param string $path Path to file.
+     *
      * @return string
      */
     protected function minimizePHP($path)
@@ -255,6 +273,8 @@ class BuildController extends Controller
 
     /**
      * Converts string configurations to array.
+     *
+     * @param mixed $config Configuration.
      *
      * @return array
      */

@@ -62,7 +62,7 @@ class Module extends \yii\base\Module
     public $fixPHP = ['realpath'];
 
     /** @type array List of regexp patterns that must be fixed in php files. */
-    public $fixPHPRules = ['realpath\(' => 'ltrim('];
+    public $fixPHPRules = ['(\s)realpath\(' => '\1ltrim('];
 
     /**
      * @param \yii\base\Action $action Build action.

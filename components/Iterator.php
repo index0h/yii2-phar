@@ -33,8 +33,8 @@ class Iterator implements \Iterator
     public function __construct($path, &$module)
     {
         $this->module = $module;
-        $basePath = realpath($path);
-        $this->basePathLength = strlen(realpath($basePath . '/../'));
+        $basePath = self::realPath($path);
+        $this->basePathLength = strlen(self::realPath($basePath . '/../'));
         $this->scan($basePath);
     }
 
@@ -191,5 +191,47 @@ class Iterator implements \Iterator
                 $this->files[] = array($relative, $file);
             }
         }
+    }
+
+    /**
+     * @param string $path Path to convert.
+     *
+     * @return mixed|string
+     */
+    public static function realPath($path)
+    {
+        $isUnixPath = ((strlen($path) === 0) || ($path[0] !== '/'));
+
+        // Checks if path is relative.
+        if ((strpos($path, ':') === false) && ($isUnixPath === true)) {
+            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+        }
+
+        // Resolve path parts (single dot, double dot and double delimiters).
+        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+        $absolutes = array();
+        foreach ($parts as $part) {
+            if ('.' == $part) {
+                continue;
+            }
+            if ('..' == $part) {
+                array_pop($absolutes);
+            } else {
+                $absolutes[] = $part;
+            }
+        }
+        $path = implode(DIRECTORY_SEPARATOR, $absolutes);
+
+        // Resolve any symlinks.
+        if ((file_exists($path) === true) && (linkinfo($path) > 0)) {
+            $path = readlink($path);
+        }
+
+        if ($isUnixPath === false) {
+            $path = '/' . $path;
+        }
+
+        return $path;
     }
 }
