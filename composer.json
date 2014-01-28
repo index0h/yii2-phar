@@ -1,7 +1,7 @@
 {
     "name": "index0h/yii-phar",
     "description": "Phar builder based on Yii2",
-    "version": "0.0.1-beta",
+    "version": "0.0.1",
     "type": "yii2-extension",
     "keywords": ["yii", "phar", "yii-phar", "build", "yii-module", "module"],
     "homepage": "https://github.com/index0h/yii-phar",
