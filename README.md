@@ -53,3 +53,20 @@ yii phar/build
     it is Phar::OPENSSL - **openSSLPrivateKeyAlias** is required.
 * **openSSLPrivateKeyAlias** - Alias to OpenSSL certificate, should be on \Phar::OPENSSL signature set.
 * **stub** - Alias to stub file, if false - will not be set.
+
+## Testing
+
+#### Run tests from IDE (example for PhpStorm)
+
+- Select Run/Debug Configuration -> Edit Configurations
+- Select Add New Configuration -> PHP Script
+- Type:
+    * File: /path/to/yii-phar/runTests.php
+    * Arguments run: run  --coverage --html
+- OK
+
+#### Run tests from console
+
+```sh
+make test
+```
