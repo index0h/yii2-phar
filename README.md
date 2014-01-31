@@ -1,7 +1,7 @@
 yii-phar
 ========
 
-[![Build Status](https://travis-ci.org/index0h/yii-phar.png?branch=master)](https://travis-ci.org/index0h/yii-phar) [![Dependency Status](https://gemnasium.com/index0h/yii-phar.png)](https://gemnasium.com/index0h/yii-phar) [![Coverage Status](https://coveralls.io/repos/index0h/yii-phar/badge.png?branch=master)](https://coveralls.io/r/index0h/yii-phar?branch=master)
+[![Build Status](https://travis-ci.org/index0h/yii-phar.png?branch=master)](https://travis-ci.org/index0h/yii-phar) [![Dependency Status](https://gemnasium.com/index0h/yii-phar.png)](https://gemnasium.com/index0h/yii-phar) [![Coverage Status](https://coveralls.io/repos/index0h/yii-phar/badge.png?branch=master)](https://coveralls.io/r/index0h/yii-phar?branch=master) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/index0h/yii-phar/badges/quality-score.png?s=9459b0c09b0ba38b0943a9f14b666d3777c224bb)](https://scrutinizer-ci.com/g/index0h/yii-phar/)
 
 This module provides console interface for building PHAR archives for Yii2 applications.
 
