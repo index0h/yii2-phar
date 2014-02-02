@@ -12,6 +12,9 @@ settings:
     coverage:
         enabled: true
         include:
+            - base/*
             - components/*
+            - helpers/*
+            - iterators/*
             - controllers/*
             - Module.php
