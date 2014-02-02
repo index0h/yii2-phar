@@ -14,3 +14,4 @@ yii-phar change log
 * fix PSR-2 CS
 * #8 Add console runner
 * updated composer.json
+* small namespace fixes

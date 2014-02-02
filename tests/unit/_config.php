@@ -14,13 +14,13 @@ return [
             'traceLevel' => 3,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => 'yii\\log\\FileTarget',
                     'logFile' => '@tests/_log/app.log'
                 ],
             ],
         ],
     ],
     'modules' => [
-        'phar' => ['class' => 'index0h\yii\phar\Module']
+        'phar' => ['class' => 'index0h\\yii\\phar\\Module']
     ]
 ];

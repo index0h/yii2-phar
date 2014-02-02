@@ -15,20 +15,20 @@ $configuration = [
     'runtimePath' => sys_get_temp_dir(),
     'defaultRoute' => 'phar/build',
     'enableCoreCommands' => false,
-    'controllerMap' => ['help' => 'yii\console\controllers\HelpController'],
+    'controllerMap' => ['help' => 'yii\\console\\controllers\\HelpController'],
     'components' => [
         'log' => [
             'traceLevel' => 3,
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => 'yii\\log\\FileTarget',
                     'logFile' => getcwd() . '/yii-phar.log'
                 ],
             ],
         ],
     ],
     'modules' => [
-        'phar' => ['class' => 'index0h\yii\phar\Module']
+        'phar' => ['class' => 'index0h\\yii\\phar\\Module']
     ]
 ];
 

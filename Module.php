@@ -32,7 +32,7 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'index0h\yii\phar\controllers';
+    public $controllerNamespace = 'index0h\\yii\\phar\\controllers';
 
     /** @type string[] List of aliases to files to compile. */
     public $files = [];

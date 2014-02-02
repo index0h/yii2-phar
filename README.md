@@ -42,7 +42,7 @@ Once module is installed, modify your application configuration as follows:
 ```php
 return [
     'modules' => [
-        'phar' => 'index0h/yii/phar/Module',
+        'phar' => 'index0h\\yii\\phar\\Module',
         ...
     ],
     ...
@@ -77,12 +77,14 @@ Components configuration is just like yii Application components, for example:
 ```php
 return [
     'modules' => [
-        'phar' => 'index0h/yii/phar/Module',
-        'components' => [
-            'fixer' => [
-                'class' => 'index0h\\yii\\phar\\components\\php\\Fixer',
-                'match' => '/.*\.php/'
-            ],
+        'phar' => [
+            'class' => 'index0h\\yii\\phar\\Module',
+            'components' => [
+                'fixer' => [
+                    'class' => 'index0h\\yii\\phar\\components\\php\\Fixer',
+                    'match' => '/.*\.php/'
+                ]
+            ]
         ]
         ...
     ],
