@@ -102,15 +102,15 @@ class Builder
     /**
      * Set OpenSSL signature and creating public key file.
      *
-     * @param \Phar  $phar                   PHAR object to update.
-     * @param string $openSSLPrivateKeyAlias Path alias to private key file.
+     * @param \Phar  $phar      PHAR object to update.
+     * @param string $pathAlias Path alias to private key file.
      *
      * @throws \yii\base\InvalidConfigException
      *     On wrong OpenSSL certificate file set (index0h\yii\phar\Module::openSSLPrivateKeyAlias).
      */
-    protected static function setOpenSSLSignature(\Phar $phar, $openSSLPrivateKeyAlias)
+    protected static function setOpenSSLSignature(\Phar $phar, $pathAlias)
     {
-        $path = \Yii::getAlias($openSSLPrivateKeyAlias);
+        $path = \Yii::getAlias($pathAlias);
         if (file_exists($path) === false) {
             throw new InvalidConfigException("Invalid configuration. Private key '{$path}' does not exists.");
         }

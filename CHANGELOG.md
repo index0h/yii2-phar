@@ -7,3 +7,4 @@ yii-phar change log
 * Full refactoring of iterators
 * Full refactoring of tests, now BDD
 * Refactoring of modificators, now - components
+* Fix travis tests

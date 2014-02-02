@@ -91,6 +91,10 @@ abstract class Component extends base\Component
      */
     public function isAppropriate(FileEvent $event)
     {
+        if ($this->match === false) {
+            return false;
+        }
+
         foreach ($this->match as $pattern) {
             if (preg_match($pattern, $event->realPath) > 0) {
                 return true;
@@ -152,6 +156,7 @@ abstract class Component extends base\Component
                     $this->match = false;
                     break;
                 }
+                // Match could not be true.
             default:
                 throw new InvalidConfigException("Invalid configuration. Wrong march type '{$value}'.");
         }

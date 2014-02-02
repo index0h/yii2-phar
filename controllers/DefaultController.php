@@ -7,7 +7,6 @@
 
 namespace index0h\yii\phar\controllers;
 
-use index0h\yii\phar\iterators\Iterator;
 use index0h\yii\phar\base\Builder;
 use yii\base\InvalidConfigException;
 use yii\console\Controller;

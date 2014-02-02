@@ -21,7 +21,7 @@ class FileHelper extends helpers\BaseFileHelper
     /**
      * @param string $path Path to convert.
      *
-     * @return mixed|string
+     * @return string
      */
     public static function realPath($path)
     {

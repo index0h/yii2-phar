@@ -22,7 +22,7 @@
         "yiisoft/yii2": "dev-master"
     },
     "require-dev": {
-        "codeception/codeception": "dev-master",
+        "codeception/codeception": "1.8.2",
         "satooshi/php-coveralls": "dev-master"
     },
     "autoload": {
