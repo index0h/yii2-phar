@@ -1,7 +1,7 @@
 {
     "name": "index0h/yii-phar",
     "description": "Phar builder based on Yii2",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "type": "yii2-extension",
     "keywords": ["yii", "phar", "yii-phar", "build", "yii-module", "module"],
     "homepage": "https://github.com/index0h/yii-phar",
@@ -22,13 +22,29 @@
         "yiisoft/yii2": "dev-master"
     },
     "require-dev": {
-        "yiisoft/yii2-codeception": "dev-master",
-        "codeception/codeception": "*",
+        "codeception/codeception": "1.8.2",
         "satooshi/php-coveralls": "dev-master"
     },
     "autoload": {
         "psr-4": {
             "index0h\\yii\\phar\\": ""
         }
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::setPermission"
+        ]
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "extra": {
+        "writable": [
+            "tests/_runtime",
+            "tests/_logs"
+        ],
+        "executable": [
+            "bin/yii-phar"
+        ]
     }
 }

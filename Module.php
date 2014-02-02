@@ -23,6 +23,9 @@ class Module extends \yii\base\Module
     /** @type string Before action event name. */
     const EVENT_BEFORE_ACTION = 'beforeAction';
 
+
+    const EVENT_PROCESS_FILE = 'processFile';
+
     /** @type int[] Array of compress algorithms, \Phar::GZ, \Phar::BZ2. */
     public $compress = [];
 
@@ -32,16 +35,13 @@ class Module extends \yii\base\Module
     public $controllerNamespace = 'index0h\yii\phar\controllers';
 
     /** @type string[] List of aliases to files to compile. */
-    public $files = ['@app/yii'];
+    public $files = [];
 
     /** @type string[] List of aliases to directories to compile. */
     public $folders = ['@app'];
 
     /** @type bool|string[] List of regexp patterns that must be ignored on build. */
-    public $ignore = ['\.(git|gitignore|svn|hg|hgignore)', '\.(travis|coveralls)\.yml'];
-
-    /** @var bool|string[] Array of regexp patterns of files that files must be included after php_strip_whitespace. */
-    public $minimizePHP = false;
+    public $ignore = ['/\.(git|gitignore|svn|hg|hgignore)/us', '/\.(travis|coveralls)\.yml/us'];
 
     /** @type string Alias to OpenSSL certificate, should be on \Phar::OPENSSL signature set. */
     public $openSSLPrivateKeyAlias = '@app/data/cert.pem';
@@ -58,23 +58,14 @@ class Module extends \yii\base\Module
     /** @type string|bool Alias to stub file, if false - will not be set. */
     public $stub = false;
 
-    /** @type string[]|bool List of regexp patterns of file names that must be fixed by fixPHPRules patterns. */
-    public $fixPHP = ['realpath'];
-
-    /** @type array List of regexp patterns that must be fixed in php files. */
-    public $fixPHPRules = ['(\s)realpath\(' => '\1ltrim('];
-
     /**
      * @param \yii\base\Action $action Build action.
      * @param mixed            $result Output of action.
      */
     public function afterAction($action, &$result)
     {
-        $event = new ActionEvent($action);
-        $event->result = $result;
-        $this->trigger(self::EVENT_BEFORE_ACTION, $event);
-
-        unset($action->controller->phar);
+        $event = new ActionEvent($action, ['result' => $result]);
+        $this->trigger(self::EVENT_AFTER_ACTION, $event);
     }
 
     /**
@@ -88,5 +79,17 @@ class Module extends \yii\base\Module
         $this->trigger(self::EVENT_BEFORE_ACTION, $event);
 
         return true;
+    }
+
+    public function init()
+    {
+        parent::init();
+
+        $components = $this->getComponents();
+
+        foreach ($components as $component) {
+            $component['module'] = $this;
+            \Yii::createObject($component);
+        }
     }
 }

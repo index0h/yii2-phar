@@ -5,3 +5,6 @@ tests/_runtime
 tests/_log
 vendor
 composer.lock
+yii-phar.log
+standalone.php
+app.phar

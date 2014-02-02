@@ -1,0 +1,37 @@
+#!/usr/bin/env php
+<?php
+/**
+ * @link      https://github.com/index0h/yii-phar
+ * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
+ * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ */
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
+
+$configuration = [
+    'id' => 'basic',
+    'basePath' => __DIR__ . '/../',
+    'runtimePath' => sys_get_temp_dir(),
+    'defaultRoute' => 'phar/build',
+    'enableCoreCommands' => false,
+    'controllerMap' => ['help' => 'yii\console\controllers\HelpController'],
+    'components' => [
+        'log' => [
+            'traceLevel' => 3,
+            'targets' => [
+                [
+                    'class' => 'yii\log\FileTarget',
+                    'logFile' => getcwd() . '/yii-phar.log'
+                ],
+            ],
+        ],
+    ],
+    'modules' => [
+        'phar' => ['class' => 'index0h\yii\phar\Module']
+    ]
+];
+
+$application = new yii\console\Application($configuration);
+$exitCode = $application->run();
+exit($exitCode);
