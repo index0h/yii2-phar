@@ -29,5 +29,22 @@
         "psr-4": {
             "index0h\\yii\\phar\\": ""
         }
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::setPermission"
+        ]
+    },
+    "config": {
+        "process-timeout": 1800
+    },
+    "extra": {
+        "writable": [
+            "tests/_runtime",
+            "tests/_logs"
+        ],
+        "executable": [
+            "bin/yii-phar"
+        ]
     }
 }

@@ -17,7 +17,7 @@ use yii\helpers\FileHelper;
  *
  * @author Roman Levishchenko <index.0h@gmail.com>
  */
-class DefaultController extends Controller
+class BuildController extends Controller
 {
     /** @type \index0h\yii\phar\Module Link to main module object. */
     public $module;
@@ -34,7 +34,6 @@ class DefaultController extends Controller
      */
     public function actionIndex($configFile = false)
     {
-
         echo "Start building PHAR package...\n";
 
         $this->loadConfiguration($configFile);
@@ -90,7 +89,7 @@ class DefaultController extends Controller
         if ($configFile === false) {
             return;
         }
-        echo '\nLoad configuration';
+        echo "\nLoad configuration";
 
         $configuration = require $configFile;
 

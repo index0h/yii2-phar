@@ -47,7 +47,7 @@ class Module extends \yii\base\Module
     public $openSSLPrivateKeyAlias = '@app/data/cert.pem';
 
     /** @type string Path to phar file save. */
-    public $path = '@runtime/app.phar';
+    public $path = '@app/app.phar';
 
     /** @type string Phar name. */
     public $pharName = 'app';

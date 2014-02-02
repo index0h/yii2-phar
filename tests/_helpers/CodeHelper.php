@@ -52,8 +52,8 @@ class CodeHelper extends \Codeception\Module
 
         $application = new Application($configuration);
 
-        $application->requestedRoute = 'phar';
-        $application->runAction('phar', []);
+        $application->requestedRoute = 'phar/build';
+        $application->runAction('phar/build', []);
     }
 
     public function seeAllFilesCompiled()

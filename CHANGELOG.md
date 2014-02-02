@@ -11,3 +11,6 @@ yii-phar change log
 * #13 by scrutinizer-ci fix
 * #14 by scrutinizer-ci fix
 * #15 by scrutinizer-ci fix
+* fix PSR-2 CS
+* #8 Add console runner
+* updated composer.json
