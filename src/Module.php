@@ -62,7 +62,7 @@ class Module extends \yii\base\Module
      * @param \yii\base\Action $action Build action.
      * @param mixed            $result Output of action.
      *
-     * @return mixed|string
+     * @return string
      */
     public function afterAction($action, &$result)
     {
