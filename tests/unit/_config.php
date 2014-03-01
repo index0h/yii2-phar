@@ -9,18 +9,7 @@ return [
     'id' => 'basic',
     'basePath' => \Yii::getAlias('@tests'),
     'runtimePath' => \Yii::getAlias('@tests/_runtime'),
-    'components' => [
-        'log' => [
-            'traceLevel' => 3,
-            'targets' => [
-                [
-                    'class' => 'yii\\log\\FileTarget',
-                    'logFile' => '@tests/_log/app.log'
-                ],
-            ],
-        ],
-    ],
     'modules' => [
-        'phar' => ['class' => 'index0h\\phar\\Module']
+        'phar' => ['class' => 'index0h\\yii\\phar\\Module']
     ]
 ];

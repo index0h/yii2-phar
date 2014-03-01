@@ -61,7 +61,7 @@ class BuildController extends Controller
         if (file_exists($runtime) === true) {
             FileHelper::removeDirectory($runtime);
         }
-        mkdir($runtime, 0777);
+        mkdir($runtime, 0777, true);
 
         if ($runtimeOnly === true) {
             return;
@@ -95,10 +95,11 @@ class BuildController extends Controller
 
         foreach ($configuration as $name => $value) {
             if ((property_exists($this->module, $name) === true) || ($this->module->canSetProperty($name) == true)) {
-                $this->$name = $value;
+                $this->module->$name = $value;
             } else {
                 throw new InvalidConfigException("Invalid configuration. Unknown configuration option '{$name}'");
             }
         }
+        $this->module->loadComponents();
     }
 }

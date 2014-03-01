@@ -6,5 +6,4 @@ tests/_log
 vendor
 composer.lock
 yii2-phar.log
-standalone.php
 app.phar

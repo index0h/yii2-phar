@@ -125,6 +125,6 @@ class BuilderHelper extends \Codeception\Module
         if (file_exists($this->runtime) === true) {
             FileHelper::removeDirectory($this->runtime);
         }
-        mkdir($this->runtime, 0777);
+        mkdir($this->runtime, 0777, true);
     }
 }

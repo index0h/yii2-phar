@@ -83,7 +83,7 @@ class FolderIterator implements \Iterator
      */
     public function getRelativePath()
     {
-        $path = substr($this->iterator->current(), strlen($this->initPath));
+        $path = substr(FileHelper::realPath($this->iterator->current()->getPathname()), strlen($this->initPath));
         if ($path[0] === '/') {
             $path = substr($path, 1);
         }

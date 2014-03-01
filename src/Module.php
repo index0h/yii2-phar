@@ -61,11 +61,15 @@ class Module extends \yii\base\Module
     /**
      * @param \yii\base\Action $action Build action.
      * @param mixed            $result Output of action.
+     *
+     * @return mixed|string
      */
     public function afterAction($action, &$result)
     {
         $event = new ActionEvent($action, ['result' => $result]);
         $this->trigger(self::EVENT_AFTER_ACTION, $event);
+
+        return "\nFinished";
     }
 
     /**
@@ -85,6 +89,14 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
+        $this->loadComponents();
+    }
+
+    /**
+     * Reloading methods should be useful on external configuration include.
+     */
+    public function loadComponents()
+    {
         $components = $this->getComponents();
 
         foreach ($components as $component) {

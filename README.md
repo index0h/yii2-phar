@@ -154,11 +154,20 @@ class Minimize extends Component
 - Select Add New Configuration -> PHP Script
 - Type:
     * File: /path/to/yii2-phar/.test.php
-    * Arguments run: run  --coverage --html
+    * Arguments run: run --coverage --html
+- OK
+
+#### Run tests from IDE (example for PhpStorm) `inside phar archive`
+
+- Select Run/Debug Configuration -> Edit Configurations
+- Select Add New Configuration -> PHP Script
+- Type:
+    * File: /path/to/yii2-phar/.test.phar.php
+    * Arguments run: run --no-exit
 - OK
 
 #### Run tests from console
 
 ```sh
-make test
+make test-all
 ```

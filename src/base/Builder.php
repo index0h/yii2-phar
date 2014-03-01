@@ -49,7 +49,7 @@ class Builder
      */
     public static function addFilesFromIterator(\Phar $phar, $module)
     {
-        echo "\nAdd Files";
+        echo "\nAdd files";
         $phar->buildFromIterator(new Iterator($module));
     }
 
@@ -85,13 +85,12 @@ class Builder
      *
      * @throws \yii\base\InvalidConfigException On wrong stub file set (index0h\phar\Module::stub).
      */
-
     public static function addStub(\Phar $phar, $stubAlias)
     {
-        echo "\nAdd stub";
         if ($stubAlias === false) {
             return;
         }
+        echo "\nAdd stub";
         $path = \Yii::getAlias($stubAlias);
         if (file_exists($path) === false) {
             throw new InvalidConfigException("Invalid configuration. Stub file '{$path}' does not exists.");
