@@ -10,7 +10,9 @@ install:
   - composer install
 
 script:
-  - make test-all
+  - make phar
+  - make test-phar
+  - make test
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
