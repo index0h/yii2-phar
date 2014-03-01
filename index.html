@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Yii2-phar : Phar builder based on Yii2" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Yii2-phar</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/index0h/yii2-phar">View on GitHub</a>
+
+          <h1 id="project_title">Yii2-phar</h1>
+          <h2 id="project_tagline">Phar builder based on Yii2</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/index0h/yii2-phar/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/index0h/yii2-phar/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="yii2-phar" class="anchor" href="#yii2-phar"><span class="octicon octicon-link"></span></a>yii2-phar</h1>
+
+<p><a href="https://travis-ci.org/index0h/yii2-phar"><img src="https://travis-ci.org/index0h/yii2-phar.png?branch=master" alt="Build Status"></a> <a href="https://packagist.org/packages/index0h/yii2-phar"><img src="https://poser.pugx.org/index0h/yii2-phar/v/stable.png" alt="Latest Stable Version"></a> <a href="https://gemnasium.com/index0h/yii2-phar"><img src="https://gemnasium.com/index0h/yii2-phar.png" alt="Dependency Status"></a> <a href="https://scrutinizer-ci.com/g/index0h/yii2-phar/"><img src="https://scrutinizer-ci.com/g/index0h/yii2-phar/badges/quality-score.png?s=646499f8cfca4630130df1b879f36d4be735cb71" alt="Scrutinizer Quality Score"></a> <a href="https://scrutinizer-ci.com/g/index0h/yii2-phar/"><img src="https://scrutinizer-ci.com/g/index0h/yii2-phar/badges/coverage.png?s=53d2290e629cdc0a7f65e67e8c979cec9f94cfa2" alt="Code Coverage"></a> <a href="https://packagist.org/packages/index0h/yii2-phar"><img src="https://poser.pugx.org/index0h/yii2-phar/downloads.png" alt="Total Downloads"></a> <a href="https://packagist.org/packages/index0h/yii2-phar"><img src="https://poser.pugx.org/index0h/yii2-phar/license.png" alt="License"></a></p>
+
+<p>This module provides console interface for building PHAR archives for Yii2 applications.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>The preferred way to install this extension is through <a href="http://getcomposer.org/download/">composer</a>.</p>
+
+<div class="highlight highlight-sh"><pre>php composer.phar require --prefer-dist index0h/yii2-phar <span class="s2">"0.0.3"</span>
+</pre></div>
+
+<p>or add line to require section of <code>composer.json</code></p>
+
+<div class="highlight highlight-json"><pre><span class="s2">"index0h/yii2-phar"</span><span class="err">:</span> <span class="s2">"0.0.3"</span>
+</pre></div>
+
+<h2>
+<a name="standalone-usage" class="anchor" href="#standalone-usage"><span class="octicon octicon-link"></span></a>Standalone usage</h2>
+
+<ul>
+<li>Installation</li>
+</ul><div class="highlight highlight-sh"><pre>php composer.phar global require index0h/yii2-phar:0.0.3
+</pre></div>
+
+<ul>
+<li>Running</li>
+</ul><div class="highlight highlight-sh"><pre>yii2-phar
+<span class="c"># Or with external configuration</span>
+yii2-phar phar/build myConfiguration.php
+</pre></div>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Once module is installed, modify your application configuration as follows:</p>
+
+<div class="highlight highlight-php"><pre><span class="k">return</span> <span class="p">[</span>
+    <span class="s1">'modules'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'phar'</span> <span class="o">=&gt;</span> <span class="s1">'index0h\\phar\\Module'</span><span class="p">,</span>
+        <span class="o">...</span>
+    <span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">];</span>
+</pre></div>
+
+<p>You can access to yii2-phar module though console:</p>
+
+<div class="highlight highlight-sh"><pre>yii phar/build
+</pre></div>
+
+<h2>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h2>
+
+<ul>
+<li>
+<strong>compress</strong> - Array of compress algorithms, \Phar::GZ, \Phar::BZ2. Creates compressed files of main phar.</li>
+<li>
+<strong>files</strong> - List of files to compile.</li>
+<li>
+<strong>folders</strong> - List of directories to compile.</li>
+<li>
+<strong>ignore</strong> - List of regexp patterns that must be ignored on build. That means if any file will match to any of
+patterns - it will be ignored.</li>
+<li>
+<strong>path</strong> - Path to phar file save.</li>
+<li>
+<strong>pharName</strong> - Phar name.</li>
+<li>
+<strong>signature</strong> - One of <a href="http://www.php.net/manual/en/phar.setsignaturealgorithm.php">Phar signature algorithms</a>. If
+it is Phar::OPENSSL - <strong>openSSLPrivateKeyAlias</strong> is required.</li>
+<li>
+<strong>openSSLPrivateKeyAlias</strong> - Alias to OpenSSL certificate, should be on \Phar::OPENSSL signature set.</li>
+<li>
+<strong>stub</strong> - Alias to stub file, if false - will not be set.</li>
+</ul><h2>
+<a name="components" class="anchor" href="#components"><span class="octicon octicon-link"></span></a>Components</h2>
+
+<p>Components - php classes for files modifications in phar archives. For example: remove all whitespaces from php code.
+Components configuration is just like yii Application components, for example:</p>
+
+<div class="highlight highlight-php"><pre><span class="k">return</span> <span class="p">[</span>
+    <span class="s1">'modules'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'phar'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'index0h\\phar\\Module'</span><span class="p">,</span>
+            <span class="s1">'components'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                <span class="s1">'fixer'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+                    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'index0h\\phar\\components\\php\\Fixer'</span><span class="p">,</span>
+                    <span class="s1">'match'</span> <span class="o">=&gt;</span> <span class="s1">'/.*\.php/'</span>
+                <span class="p">]</span>
+            <span class="p">]</span>
+        <span class="p">]</span>
+        <span class="o">...</span>
+    <span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">];</span>
+</pre></div>
+
+<h3>
+<a name="available-components" class="anchor" href="#available-components"><span class="octicon octicon-link"></span></a>Available components</h3>
+
+<h4>
+<a name="fixer" class="anchor" href="#fixer"><span class="octicon octicon-link"></span></a>Fixer</h4>
+
+<p>Fixer changes realpath functions in files that doesn't work in phar.</p>
+
+<ul>
+<li>
+<strong>match</strong> - List of regexp for files that must be modified.</li>
+<li>
+<strong>replace</strong> - Array of regexp for [<code>from</code> =&gt; <code>to</code>] for modifications in files.</li>
+</ul><h4>
+<a name="minimize" class="anchor" href="#minimize"><span class="octicon octicon-link"></span></a>Minimize</h4>
+
+<p>Removes all whitespaces form php files by php_strip_whitespace.</p>
+
+<ul>
+<li>
+<strong>match</strong> - List of regexp for files that must be modified.</li>
+</ul><h3>
+<a name="writing-own-component" class="anchor" href="#writing-own-component"><span class="octicon octicon-link"></span></a>Writing own component</h3>
+
+<p>Simply create class that extends index0h\yii\phar\base\Component and implement processFile method.</p>
+
+<p>For example minimize component:</p>
+
+<div class="highlight highlight-php"><pre><span class="k">namespace</span> <span class="nx">index0h\yii\phar\components\php</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="nx">index0h\yii\phar\base\Component</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">index0h\yii\phar\base\FileEvent</span><span class="p">;</span>
+
+<span class="sd">/**</span>
+<span class="sd"> * Removes whitespace and comments from php files.</span>
+<span class="sd"> */</span>
+<span class="k">class</span> <span class="nc">Minimize</span> <span class="k">extends</span> <span class="nx">Component</span>
+<span class="p">{</span>
+    <span class="sd">/**</span>
+<span class="sd">     * For all php files without suffix Controller (because help command parses comments).</span>
+<span class="sd">     */</span>
+    <span class="k">protected</span> <span class="nv">$match</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'/(?&lt;!Controller)\.php/us'</span><span class="p">];</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Modification of file.</span>
+<span class="sd">     *</span>
+<span class="sd">     * @param FileEvent $event Event with file information.</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">processFile</span><span class="p">(</span><span class="nx">FileEvent</span> <span class="nv">$event</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nb">file_put_contents</span><span class="p">(</span><span class="nv">$event</span><span class="o">-&gt;</span><span class="na">realPath</span><span class="p">,</span> <span class="nb">php_strip_whitespace</span><span class="p">(</span><span class="nv">$event</span><span class="o">-&gt;</span><span class="na">realPath</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>
+<a name="fileevent-structure" class="anchor" href="#fileevent-structure"><span class="octicon octicon-link"></span></a>FileEvent structure</h4>
+
+<ul>
+<li>realPath - path to temporary file.</li>
+<li>relativePath - path in phar file.</li>
+</ul><h2>
+<a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing</h2>
+
+<h4>
+<a name="run-tests-from-ide-example-for-phpstorm" class="anchor" href="#run-tests-from-ide-example-for-phpstorm"><span class="octicon octicon-link"></span></a>Run tests from IDE (example for PhpStorm)</h4>
+
+<ul>
+<li>Select Run/Debug Configuration -&gt; Edit Configurations</li>
+<li>Select Add New Configuration -&gt; PHP Script</li>
+<li>Type:
+
+<ul>
+<li>File: /path/to/yii2-phar/.test.php</li>
+<li>Arguments run: run --coverage --html</li>
+</ul>
+</li>
+<li>OK</li>
+</ul><h4>
+<a name="run-tests-from-ide-example-for-phpstorm-inside-phar-archive" class="anchor" href="#run-tests-from-ide-example-for-phpstorm-inside-phar-archive"><span class="octicon octicon-link"></span></a>Run tests from IDE (example for PhpStorm) <code>inside phar archive</code>
+</h4>
+
+<ul>
+<li>Select Run/Debug Configuration -&gt; Edit Configurations</li>
+<li>Select Add New Configuration -&gt; PHP Script</li>
+<li>Type:
+
+<ul>
+<li>File: /path/to/yii2-phar/.test.phar.php</li>
+<li>Arguments run: run --no-exit</li>
+</ul>
+</li>
+<li>OK</li>
+</ul><h4>
+<a name="run-tests-from-console" class="anchor" href="#run-tests-from-console"><span class="octicon octicon-link"></span></a>Run tests from console</h4>
+
+<div class="highlight highlight-sh"><pre>make <span class="nb">test</span>-all
+</pre></div>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Yii2-phar maintained by <a href="https://github.com/index0h">index0h</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
