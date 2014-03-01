@@ -51,7 +51,7 @@ class FileHelper extends helpers\BaseFileHelper
      *
      * @param string $path Path to resolve.
      *
-     * @return mixed|string
+     * @return string
      */
     protected static function resolveDots($path)
     {
