@@ -6,6 +6,8 @@
  * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
+error_reporting(E_ALL ^ E_STRICT);
+
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
 

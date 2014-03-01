@@ -10,7 +10,6 @@ install:
   - composer install
 
 script:
-  - make phar
   - make test-phar
   - make test
 

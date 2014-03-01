@@ -5,7 +5,7 @@ phar:
 test:
 	php ./.test.php run --coverage --html --xml
 
-test-phar:
+test-phar: phar
 	php ./.test.phar.php run --no-exit
 
 test-all: test-phar test
