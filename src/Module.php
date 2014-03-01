@@ -23,7 +23,7 @@ class Module extends \yii\base\Module
     /** @type string Before action event name. */
     const EVENT_BEFORE_ACTION = 'beforeAction';
 
-
+    /** @type string Event on file process start. */
     const EVENT_PROCESS_FILE = 'processFile';
 
     /** @type int[] Array of compress algorithms, \Phar::GZ, \Phar::BZ2. */
@@ -85,6 +85,9 @@ class Module extends \yii\base\Module
         return true;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();

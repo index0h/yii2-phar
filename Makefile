@@ -1,12 +1,12 @@
 
 phar:
-	/usr/bin/env php bin/yii2-phar phar/build tests/unit/_phar.php
+	php bin/yii2-phar phar/build tests/unit/_phar.php
 
 test:
-	/usr/bin/env php ./.test.php run --coverage --html --xml
+	php ./.test.php run --coverage --html --xml
 
 test-phar: phar
-	/usr/bin/env php ./.test.phar.php run --no-exit
+	php ./.test.phar.php run --no-exit
 
 test-all: test-phar test
 
