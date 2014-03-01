@@ -57,24 +57,25 @@ class BuildController extends Controller
      */
     protected function clean($runtimeOnly = true)
     {
-        $runtime = \Yii::getAlias('@runtime/yii2-phar');
-        if (file_exists($runtime) === true) {
-            FileHelper::removeDirectory($runtime);
-        }
-        mkdir($runtime, 0777, true);
+        $this->cleanRuntime();
 
         if ($runtimeOnly === true) {
             return;
         }
 
-        $path = \Yii::getAlias($this->module->path);
+        $this->removePhars();
+    }
 
-        foreach (['', '.gz', '.bz2'] as $extension) {
-            $fullPath = $path . DIRECTORY_SEPARATOR . $extension;
-            if (file_exists($fullPath) === true) {
-                \Phar::unlinkArchive($fullPath);
-            }
+    /**
+     * Recreates runtime/yii2-phar directory.
+     */
+    protected function cleanRuntime()
+    {
+        $runtime = \Yii::getAlias('@runtime/yii2-phar');
+        if (file_exists($runtime) === true) {
+            FileHelper::removeDirectory($runtime);
         }
+        mkdir($runtime, 0777, true);
     }
 
     /**
@@ -94,12 +95,27 @@ class BuildController extends Controller
         $configuration = require $configFile;
 
         foreach ($configuration as $name => $value) {
-            if ((property_exists($this->module, $name) === true) || ($this->module->canSetProperty($name) == true)) {
+            if ($this->module->canSetProperty($name) == true) {
                 $this->module->$name = $value;
             } else {
                 throw new InvalidConfigException("Invalid configuration. Unknown configuration option '{$name}'");
             }
         }
         $this->module->loadComponents();
+    }
+
+    /**
+     * Remove existing old phar archives.
+     */
+    protected function removePhars()
+    {
+        $path = \Yii::getAlias($this->module->path);
+
+        foreach (['', '.gz', '.bz2'] as $extension) {
+            $fullPath = $path . DIRECTORY_SEPARATOR . $extension;
+            if (file_exists($fullPath) === true) {
+                \Phar::unlinkArchive($fullPath);
+            }
+        }
     }
 }

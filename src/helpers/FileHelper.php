@@ -32,21 +32,7 @@ class FileHelper extends helpers\BaseFileHelper
             $path = getcwd() . DIRECTORY_SEPARATOR . $path;
         }
 
-        // Resolve path parts (single dot, double dot and double delimiters).
-        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
-        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
-        $absolutes = array();
-        foreach ($parts as $part) {
-            if (('.' === $part) || ('' === $part)) {
-                continue;
-            }
-            if ('..' === $part) {
-                array_pop($absolutes);
-            } else {
-                $absolutes[] = $part;
-            }
-        }
-        $path = implode(DIRECTORY_SEPARATOR, $absolutes);
+        $path = self::resolveDots($path);
 
         // Resolve any symlinks.
         if ((file_exists($path) === true) && (linkinfo($path) > 0)) {
@@ -58,5 +44,29 @@ class FileHelper extends helpers\BaseFileHelper
         }
 
         return $path;
+    }
+
+    /**
+     * Resolve path parts (single dot, double dot and double delimiters).
+     *
+     * @param string $path Path to resolve.
+     *
+     * @return mixed|string
+     */
+    protected static function resolveDots($path)
+    {
+        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+        $absolutes = array();
+        foreach ($parts as $part) {
+            if (('.' === $part) || ('' === $part)) {
+                continue;
+            } elseif ('..' === $part) {
+                array_pop($absolutes);
+            } else {
+                $absolutes[] = $part;
+            }
+        }
+        return implode(DIRECTORY_SEPARATOR, $absolutes);
     }
 }
