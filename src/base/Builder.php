@@ -1,13 +1,13 @@
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
-namespace index0h\yii\phar\base;
+namespace index0h\phar\base;
 
-use index0h\yii\phar\iterators\Iterator;
+use index0h\phar\iterators\Iterator;
 use yii\base\InvalidConfigException;
 
 /**
@@ -23,7 +23,7 @@ class Builder
      * @param \Phar $phar          PHAR object to update.
      * @param int[] $configuration List of compress types.
      *
-     * @throws \yii\base\InvalidConfigException On wrong compress type set (index0h\yii\phar\Module::compress).
+     * @throws \yii\base\InvalidConfigException On wrong compress type set (index0h\phar\Module::compress).
      */
     public static function addCompress(\Phar $phar, $configuration)
     {
@@ -45,7 +45,7 @@ class Builder
      * Add Files form folders.
      *
      * @param \Phar                    $phar   PHAR object to update.
-     * @param \index0h\yii\phar\Module $module Link to phar-module for getting configs and fire events.
+     * @param \index0h\phar\Module $module Link to phar-module for getting configs and fire events.
      */
     public static function addFilesFromIterator(\Phar $phar, $module)
     {
@@ -60,7 +60,7 @@ class Builder
      * @param integer     $signature       Signature type.
      * @param null|string $privateKeyAlias Path alias to private key, on signature type is \Phar::OPENSSL.
      *
-     * @throws \yii\base\InvalidConfigException On wrong signature type set (index0h\yii\phar\Module::signature).
+     * @throws \yii\base\InvalidConfigException On wrong signature type set (index0h\phar\Module::signature).
      */
     public static function addSignature(\Phar $phar, $signature, $privateKeyAlias = null)
     {
@@ -83,7 +83,7 @@ class Builder
      * @param \Phar       $phar      PHAR object to update.
      * @param string|bool $stubAlias Path alias to stub file.
      *
-     * @throws \yii\base\InvalidConfigException On wrong stub file set (index0h\yii\phar\Module::stub).
+     * @throws \yii\base\InvalidConfigException On wrong stub file set (index0h\phar\Module::stub).
      */
 
     public static function addStub(\Phar $phar, $stubAlias)
@@ -106,7 +106,7 @@ class Builder
      * @param string $pathAlias Path alias to private key file.
      *
      * @throws \yii\base\InvalidConfigException
-     *     On wrong OpenSSL certificate file set (index0h\yii\phar\Module::openSSLPrivateKeyAlias).
+     *     On wrong OpenSSL certificate file set (index0h\phar\Module::openSSLPrivateKeyAlias).
      */
     protected static function setOpenSSLSignature(\Phar $phar, $pathAlias)
     {

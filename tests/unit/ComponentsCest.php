@@ -1,15 +1,15 @@
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
-use index0h\yii\phar\components\php\Fixer;
-use index0h\yii\phar\components\php\Minimize;
+use index0h\phar\components\php\Fixer;
+use index0h\phar\components\php\Minimize;
 
 /**
- * Check index0h\yii\phar\components\php\***.
+ * Check index0h\phar\components\php\***.
  *
  * @author Roman Levishchenko <index.0h@gmail.com>
  */

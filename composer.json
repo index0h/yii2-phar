@@ -1,10 +1,10 @@
 {
-    "name": "index0h/yii-phar",
+    "name": "index0h/yii2-phar",
     "description": "Phar builder based on Yii2",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "type": "yii2-extension",
-    "keywords": ["yii", "phar", "yii-phar", "build", "yii-module", "module"],
-    "homepage": "https://github.com/index0h/yii-phar",
+    "keywords": ["yii", "phar", "yii2-phar", "build", "yii-module", "module"],
+    "homepage": "https://github.com/index0h/yii2-phar",
     "license": "MIT",
     "authors": [
         {
@@ -13,8 +13,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/index0h/yii-phar/issues",
-        "source": "https://github.com/index0h/yii-phar"
+        "issues": "https://github.com/index0h/yii2-phar/issues",
+        "source": "https://github.com/index0h/yii2-phar"
     },
     "require": {
         "php": ">=5.4.0",
@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "index0h\\yii\\phar\\": ""
+            "index0h\\phar\\": "src"
         }
     },
     "scripts": {
@@ -44,7 +44,7 @@
             "tests/_logs"
         ],
         "executable": [
-            "bin/yii-phar"
+            "bin/yii2-phar"
         ]
     }
 }

@@ -1,13 +1,13 @@
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
-namespace index0h\yii\phar\base;
+namespace index0h\phar\base;
 
-use index0h\yii\phar\Module;
+use index0h\phar\Module;
 use yii\base\ActionEvent;
 use yii\base;
 use yii\base\InvalidConfigException;
@@ -19,7 +19,7 @@ use yii\base\InvalidConfigException;
  */
 abstract class Component extends base\Component
 {
-    /** @type \index0h\yii\phar\Module Link to Phar module. */
+    /** @type \index0h\phar\Module Link to Phar module. */
     public $module;
 
     /** @type string System name for Phar module. */
@@ -113,7 +113,7 @@ abstract class Component extends base\Component
         if ($event->isTemporary === true) {
             return;
         }
-        $temporaryPath = tempnam(\Yii::getAlias('@runtime/yii-phar'), basename($event->realPath));
+        $temporaryPath = tempnam(\Yii::getAlias('@runtime/yii2-phar'), basename($event->realPath));
         copy($event->realPath, $temporaryPath);
 
         $event->isTemporary = true;

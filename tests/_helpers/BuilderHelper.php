@@ -1,13 +1,13 @@
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
 namespace Codeception\Module;
 
-use index0h\yii\phar\base\Builder;
+use index0h\phar\base\Builder;
 use yii\helpers\FileHelper;
 
 /**

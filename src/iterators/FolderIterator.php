@@ -1,13 +1,13 @@
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
-namespace index0h\yii\phar\iterators;
+namespace index0h\phar\iterators;
 
-use index0h\yii\phar\helpers\FileHelper;
+use index0h\phar\helpers\FileHelper;
 
 /**
  * Scans all subdirectories.

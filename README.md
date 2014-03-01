@@ -1,7 +1,7 @@
-yii-phar
+yii2-phar
 ========
 
-[![Build Status](https://travis-ci.org/index0h/yii-phar.png?branch=master)](https://travis-ci.org/index0h/yii-phar) [![Dependency Status](https://gemnasium.com/index0h/yii-phar.png)](https://gemnasium.com/index0h/yii-phar) [![Coverage Status](https://coveralls.io/repos/index0h/yii-phar/badge.png?branch=master)](https://coveralls.io/r/index0h/yii-phar?branch=master) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/index0h/yii-phar/badges/quality-score.png?s=9459b0c09b0ba38b0943a9f14b666d3777c224bb)](https://scrutinizer-ci.com/g/index0h/yii-phar/)
+[![Build Status](https://travis-ci.org/index0h/yii2-phar.png?branch=master)](https://travis-ci.org/index0h/yii2-phar) [![Latest Stable Version](https://poser.pugx.org/index0h/yii2-phar/v/stable.png)](https://packagist.org/packages/index0h/yii2-phar) [![Dependency Status](https://gemnasium.com/index0h/yii2-phar.png)](https://gemnasium.com/index0h/yii2-phar) [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/index0h/yii2-phar/badges/quality-score.png?s=646499f8cfca4630130df1b879f36d4be735cb71)](https://scrutinizer-ci.com/g/index0h/yii2-phar/) [![Code Coverage](https://scrutinizer-ci.com/g/index0h/yii2-phar/badges/coverage.png?s=53d2290e629cdc0a7f65e67e8c979cec9f94cfa2)](https://scrutinizer-ci.com/g/index0h/yii2-phar/) [![Total Downloads](https://poser.pugx.org/index0h/yii2-phar/downloads.png)](https://packagist.org/packages/index0h/yii2-phar) [![License](https://poser.pugx.org/index0h/yii2-phar/license.png)](https://packagist.org/packages/index0h/yii2-phar)
 
 This module provides console interface for building PHAR archives for Yii2 applications.
 
@@ -10,13 +10,13 @@ This module provides console interface for building PHAR archives for Yii2 appli
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 ```sh
-php composer.phar require --prefer-dist index0h/yii-phar "0.0.2"
+php composer.phar require --prefer-dist index0h/yii2-phar "0.0.3"
 ```
 
 or add line to require section of `composer.json`
 
 ```json
-"index0h/yii-phar": "*"
+"index0h/yii2-phar": "0.0.3"
 ```
 
 ## Standalone usage
@@ -24,15 +24,15 @@ or add line to require section of `composer.json`
 * Installation
 
 ```sh
-php composer.phar global require index0h/yii-phar:0.0.2
+php composer.phar global require index0h/yii2-phar:0.0.3
 ```
 
 * Running
 
 ```sh
-yii-phar
+yii2-phar
 # Or with external configuration
-yii-phar phar/build myConfiguraion.php
+yii2-phar phar/build myConfiguration.php
 ```
 
 ## Usage
@@ -42,14 +42,14 @@ Once module is installed, modify your application configuration as follows:
 ```php
 return [
     'modules' => [
-        'phar' => 'index0h\\yii\\phar\\Module',
+        'phar' => 'index0h\\phar\\Module',
         ...
     ],
     ...
 ];
 ```
 
-You can access to yii-phar module though console:
+You can access to yii2-phar module though console:
 
 ```sh
 yii phar/build
@@ -78,10 +78,10 @@ Components configuration is just like yii Application components, for example:
 return [
     'modules' => [
         'phar' => [
-            'class' => 'index0h\\yii\\phar\\Module',
+            'class' => 'index0h\\phar\\Module',
             'components' => [
                 'fixer' => [
-                    'class' => 'index0h\\yii\\phar\\components\\php\\Fixer',
+                    'class' => 'index0h\\phar\\components\\php\\Fixer',
                     'match' => '/.*\.php/'
                 ]
             ]
@@ -153,7 +153,7 @@ class Minimize extends Component
 - Select Run/Debug Configuration -> Edit Configurations
 - Select Add New Configuration -> PHP Script
 - Type:
-    * File: /path/to/yii-phar/runTests.php
+    * File: /path/to/yii2-phar/.test.php
     * Arguments run: run  --coverage --html
 - OK
 

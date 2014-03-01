@@ -1,4 +1,4 @@
-yii-phar change log
+yii2-phar change log
 ===================
 
 0.0.2

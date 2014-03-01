@@ -1,13 +1,13 @@
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
-namespace index0h\yii\phar\controllers;
+namespace index0h\phar\controllers;
 
-use index0h\yii\phar\base\Builder;
+use index0h\phar\base\Builder;
 use yii\base\InvalidConfigException;
 use yii\console\Controller;
 use yii\helpers\FileHelper;
@@ -19,7 +19,7 @@ use yii\helpers\FileHelper;
  */
 class BuildController extends Controller
 {
-    /** @type \index0h\yii\phar\Module Link to main module object. */
+    /** @type \index0h\phar\Module Link to main module object. */
     public $module;
 
     /** @type \Phar Phar object. */
@@ -51,13 +51,13 @@ class BuildController extends Controller
     }
 
     /**
-     * Clean yii-phar runtime directory.
+     * Clean yii2-phar runtime directory.
      *
      * @param bool $runtimeOnly On false - remove phar archive.
      */
     protected function clean($runtimeOnly = true)
     {
-        $runtime = \Yii::getAlias('@runtime/yii-phar');
+        $runtime = \Yii::getAlias('@runtime/yii2-phar');
         if (file_exists($runtime) === true) {
             FileHelper::removeDirectory($runtime);
         }

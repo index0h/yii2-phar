@@ -1,9 +1,9 @@
 #!/usr/bin/env php
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -22,13 +22,13 @@ $configuration = [
             'targets' => [
                 [
                     'class' => 'yii\\log\\FileTarget',
-                    'logFile' => getcwd() . '/yii-phar.log'
+                    'logFile' => getcwd() . '/yii2-phar.log'
                 ],
             ],
         ],
     ],
     'modules' => [
-        'phar' => ['class' => 'index0h\\yii\\phar\\Module']
+        'phar' => ['class' => 'index0h\\phar\\Module']
     ]
 ];
 

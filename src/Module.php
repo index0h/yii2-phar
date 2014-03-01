@@ -1,17 +1,17 @@
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
-namespace index0h\yii\phar;
+namespace index0h\phar;
 
 use Yii;
 use yii\base\ActionEvent;
 
 /**
- * This is main class of Yii-Phar module.
+ * This is main class of yii2-phar module.
  *
  * @author Roman Levishchenko <index.0h@gmail.com>
  */
@@ -32,7 +32,7 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'index0h\\yii\\phar\\controllers';
+    public $controllerNamespace = 'index0h\\phar\\controllers';
 
     /** @type string[] List of aliases to files to compile. */
     public $files = [];

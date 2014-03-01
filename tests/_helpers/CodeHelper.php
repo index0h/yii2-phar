@@ -1,13 +1,13 @@
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
 namespace Codeception\Module;
 
-use index0h\yii\phar\iterators\FolderIterator;
+use index0h\phar\iterators\FolderIterator;
 use yii\console\Application;
 
 /**
@@ -19,20 +19,20 @@ class CodeHelper extends \Codeception\Module
 {
     /** @type array Configuration of phar module. */
     protected $moduleConfiguration = [
-        'class' => 'index0h\\yii\\phar\\Module',
+        'class' => 'index0h\\phar\\Module',
         'compress' => false,
         'signature' => false,
         'stub' => false,
-        'path' => '@tests/_runtime/yii-phar/app.phar',
+        'path' => '@tests/_runtime/yii2-phar/app.phar',
         'ignore' => [],
         'folders' => ['@tests/_data'],
         'components' => [
             'fixer' => [
-                'class' => 'index0h\\yii\\phar\\components\\php\\Fixer',
+                'class' => 'index0h\\phar\\components\\php\\Fixer',
                 'match' => '/.*\.php/'
             ],
             'minimize' => [
-                'class' => 'index0h\\yii\\phar\\components\\php\\Minimize',
+                'class' => 'index0h\\phar\\components\\php\\Minimize',
                 'match' => ['/.*\.php/']
             ]
         ]
@@ -40,8 +40,8 @@ class CodeHelper extends \Codeception\Module
 
     public function extractPharFile()
     {
-        $phar = new \Phar(\Yii::getAlias('@tests/_runtime/yii-phar/app.phar'));
-        $phar->extractTo(\Yii::getAlias('@tests/_runtime/yii-phar/extract'));
+        $phar = new \Phar(\Yii::getAlias('@tests/_runtime/yii2-phar/app.phar'));
+        $phar->extractTo(\Yii::getAlias('@tests/_runtime/yii2-phar/extract'));
     }
 
     public function runPharCommand()
@@ -59,7 +59,7 @@ class CodeHelper extends \Codeception\Module
     public function seeAllFilesCompiled()
     {
         $expected = $this->getAllFiles(\Yii::getAlias('@tests/_data'));
-        $actual = $this->getAllFiles(\Yii::getAlias('@tests/_runtime/yii-phar/extract/_data'));
+        $actual = $this->getAllFiles(\Yii::getAlias('@tests/_runtime/yii2-phar/extract/_data'));
 
         $this->assertEquals($expected, $actual);
     }

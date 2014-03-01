@@ -1,14 +1,14 @@
 <?php
 /**
- * @link      https://github.com/index0h/yii-phar
+ * @link      https://github.com/index0h/yii2-phar
  * @copyright Copyright (c) 2014 Roman Levishchenko <index.0h@gmail.com>
- * @license   https://raw.github.com/index0h/yii-phar/master/LICENSE
+ * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
-namespace index0h\yii\phar\iterators;
+namespace index0h\phar\iterators;
 
-use index0h\yii\phar\base\FileEvent;
-use index0h\yii\phar\Module;
+use index0h\phar\base\FileEvent;
+use index0h\phar\Module;
 
 /**
  * Phar builder controller.
@@ -17,7 +17,7 @@ use index0h\yii\phar\Module;
  */
 class Iterator implements \Iterator
 {
-    /** @type \index0h\yii\phar\Module Link to main module object. */
+    /** @type \index0h\phar\Module Link to main module object. */
     public $module;
 
     /** @type FileEvent Current processing file. */
@@ -30,7 +30,7 @@ class Iterator implements \Iterator
     protected $iterator;
 
     /**
-     * @param \index0h\yii\phar\Module $module Link to main module object.
+     * @param \index0h\phar\Module $module Link to main module object.
      */
     public function __construct($module)
     {
