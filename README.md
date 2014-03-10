@@ -10,13 +10,13 @@ This module provides console interface for building PHAR archives for Yii2 appli
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 ```sh
-php composer.phar require --prefer-dist index0h/yii2-phar "0.0.3"
+php composer.phar require --prefer-dist index0h/yii2-phar "*"
 ```
 
 or add line to require section of `composer.json`
 
 ```json
-"index0h/yii2-phar": "0.0.3"
+"index0h/yii2-phar": "*"
 ```
 
 ## Standalone usage
@@ -24,7 +24,7 @@ or add line to require section of `composer.json`
 * Installation
 
 ```sh
-php composer.phar global require index0h/yii2-phar:0.0.3
+php composer.phar global require index0h/yii2-phar:*
 ```
 
 * Running
