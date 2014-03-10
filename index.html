@@ -43,12 +43,12 @@
 
 <p>The preferred way to install this extension is through <a href="http://getcomposer.org/download/">composer</a>.</p>
 
-<div class="highlight highlight-sh"><pre>php composer.phar require --prefer-dist index0h/yii2-phar <span class="s2">"0.0.3"</span>
+<div class="highlight highlight-sh"><pre>php composer.phar require --prefer-dist index0h/yii2-phar <span class="s2">"*"</span>
 </pre></div>
 
 <p>or add line to require section of <code>composer.json</code></p>
 
-<div class="highlight highlight-json"><pre><span class="s2">"index0h/yii2-phar"</span><span class="err">:</span> <span class="s2">"0.0.3"</span>
+<div class="highlight highlight-json"><pre><span class="s2">"index0h/yii2-phar"</span><span class="err">:</span> <span class="s2">"*"</span>
 </pre></div>
 
 <h2>
@@ -56,7 +56,7 @@
 
 <ul>
 <li>Installation</li>
-</ul><div class="highlight highlight-sh"><pre>php composer.phar global require index0h/yii2-phar:0.0.3
+</ul><div class="highlight highlight-sh"><pre>php composer.phar global require index0h/yii2-phar:*
 </pre></div>
 
 <ul>
@@ -156,14 +156,14 @@ Components configuration is just like yii Application components, for example:</
 </ul><h3>
 <a name="writing-own-component" class="anchor" href="#writing-own-component"><span class="octicon octicon-link"></span></a>Writing own component</h3>
 
-<p>Simply create class that extends index0h\yii\phar\base\Component and implement processFile method.</p>
+<p>Simply create class that extends index0h\phar\base\Component and implement processFile method.</p>
 
 <p>For example minimize component:</p>
 
-<div class="highlight highlight-php"><pre><span class="k">namespace</span> <span class="nx">index0h\yii\phar\components\php</span><span class="p">;</span>
+<div class="highlight highlight-php"><pre><span class="k">namespace</span> <span class="nx">index0h\phar\components\php</span><span class="p">;</span>
 
-<span class="k">use</span> <span class="nx">index0h\yii\phar\base\Component</span><span class="p">;</span>
-<span class="k">use</span> <span class="nx">index0h\yii\phar\base\FileEvent</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">index0h\phar\base\Component</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">index0h\phar\base\FileEvent</span><span class="p">;</span>
 
 <span class="sd">/**</span>
 <span class="sd"> * Removes whitespace and comments from php files.</span>
