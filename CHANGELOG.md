@@ -1,6 +1,21 @@
 yii2-phar change log
 ===================
 
+0.0.4
+-----
+
+#25 create russian readme
+#24 Add filemtime and is_dir realisations
+
+0.0.3
+-----
+
+#21 move files to src directory enhancement
+#20 add more badges from https://poser.pugx.org/ enhancement
+#19 remove coveralls and add scrutinizer enhancement
+#18 add test environment for run inside phar
+#17 fix composer.json bin section bug
+
 0.0.2
 -----
 
