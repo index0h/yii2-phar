@@ -12,37 +12,89 @@ use yii\helpers;
 /**
  * Fixed realpath function.
  *
- * @see https://bugs.php.net/bug.php?id=52769
+ * @see    https://bugs.php.net/bug.php?id=52769
  *
  * @author Roman Levishchenko <index.0h@gmail.com>
  */
 class FileHelper extends helpers\BaseFileHelper
 {
+    const  PHAR_PREFIX = 'phar://';
+
     /**
      * @param string $path Path to convert.
      *
-     * @return string
+     * @return mixed
      */
     public static function realPath($path)
     {
-        $isUnixPath = ((strlen($path) === 0) || ($path[0] !== '/'));
-
-        // Checks if path is relative.
-        if ((strpos($path, ':') === false) && ($isUnixPath === true)) {
-            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+        if (self::isPhar($path) === false) {
+            return realpath($path);
         }
 
+        if (preg_match('/^(phar:\/{0,2})?(.*)?/u', $path, $matches) === 0) {
+            return false;
+        }
+
+        $path = self::resolveRelativeToGlobal($matches[2]);
         $path = self::resolveDots($path);
 
-        // Resolve any symlinks.
-        if ((file_exists($path) === true) && (linkinfo($path) > 0)) {
-            $path = readlink($path);
+        return self::PHAR_PREFIX . $path;
+    }
+
+    /**
+     * @param string $path Path to file/folder.
+     *
+     * @return int
+     */
+    public static function fileMakeTime($path)
+    {
+        if (self::isPhar($path) === false) {
+            return filemtime($path);
         }
 
-        if ($isUnixPath === false) {
-            $path = '/' . $path;
-        }
+        return filemtime(self::getPharPath($path));
+    }
 
+    /**
+     * @param string $path Path to folder.
+     *
+     * @return bool
+     */
+    public static function isDir($path)
+    {
+        return (self::isPhar($path) === true) ? file_exists($path) : is_dir($path);
+    }
+
+    /**
+     * @param string $path Path to file/folder.
+     *
+     * @return bool
+     */
+    public static function isPhar($path)
+    {
+        return (strpos($path, 'phar:') === 0);
+    }
+
+    /**
+     * @param string $path Path to file/folder.
+     */
+    protected static function getPharPath($path)
+    {
+        $path = self::realPath($path);
+        $path = str_replace(self::PHAR_PREFIX, '', $path);
+    }
+
+    /**
+     * @param string $path Path without stream prefix.
+     *
+     * @return string
+     */
+    protected static function resolveRelativeToGlobal($path)
+    {
+        // Checks if path is relative.
+        if ((strpos($path, ':') === false) && ((strlen($path) === 0) || ($path[0] !== '/'))) {
+            $path = getcwd() . DIRECTORY_SEPARATOR . $path;
+        }
         return $path;
     }
 
@@ -55,9 +107,14 @@ class FileHelper extends helpers\BaseFileHelper
      */
     protected static function resolveDots($path)
     {
-        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
+        $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
         $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
-        $absolutes = array();
+        $absolutes = [];
+
+        if ($path[0] === DIRECTORY_SEPARATOR) {
+            $absolutes[] = '';
+        }
+
         foreach ($parts as $part) {
             if (('.' === $part) || ('' === $part)) {
                 continue;

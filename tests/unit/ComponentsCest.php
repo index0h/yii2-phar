@@ -28,4 +28,9 @@ class ComponentsCests
         $I->seeMinimizedFile($file, ['include', 'realpath.php']);
         $I->removeTemporaryFile($file);
     }
+
+    public function testFileHelper(\CodeGuy $I)
+    {
+        $I->seeRightPathConvert();
+    }
 }

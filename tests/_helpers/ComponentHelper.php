@@ -50,7 +50,7 @@ class ComponentHelper extends \Codeception\Module
 
     public function seeFixedFile($file)
     {
-        $expected = "<?php\necho ltrim(__DIR__);";
+        $expected = "<?php\necho \\index0h\\phar\\helpers\\FileHelper::realPath(__DIR__);";
         $actual = file_get_contents($file->realPath);
 
         $this->assertEquals($expected, $actual);

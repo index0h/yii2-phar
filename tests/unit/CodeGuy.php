@@ -9,6 +9,7 @@ use Codeception\Module\CodeHelper;
 use Codeception\Module\ComponentHelper;
 use Codeception\Module\IteratorHelper;
 use Codeception\Module\BuilderHelper;
+use Codeception\Module\FileHelper;
 
 /**
  * Inherited methods
@@ -35,11 +36,11 @@ class CodeGuy extends \Codeception\AbstractGuy
      * ----------------------------------------------
      *
      *
-     * @see Codeception\Module\CodeHelper::runPharCommand()
+     * @see Codeception\Module\CodeHelper::extractPharFile()
      * @return \Codeception\Maybe
      */
-    public function runPharCommand() {
-        $this->scenario->addStep(new \Codeception\Step\Action('runPharCommand', func_get_args()));
+    public function extractPharFile() {
+        $this->scenario->addStep(new \Codeception\Step\Action('extractPharFile', func_get_args()));
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);
@@ -54,11 +55,11 @@ class CodeGuy extends \Codeception\AbstractGuy
      * ----------------------------------------------
      *
      *
-     * @see Codeception\Module\CodeHelper::extractPharFile()
+     * @see Codeception\Module\CodeHelper::runPharCommand()
      * @return \Codeception\Maybe
      */
-    public function extractPharFile() {
-        $this->scenario->addStep(new \Codeception\Step\Action('extractPharFile', func_get_args()));
+    public function runPharCommand() {
+        $this->scenario->addStep(new \Codeception\Step\Action('runPharCommand', func_get_args()));
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);
@@ -542,8 +543,7 @@ class CodeGuy extends \Codeception\AbstractGuy
      * Documentation taken from corresponding module.
      * ----------------------------------------------
      *
-     * @param \Phar $phar
-     * @param       $compress
+     *
     * Conditional Assertion: Test won't be stopped on fail
      * @see Codeception\Module\BuilderHelper::seeCompressed()
      * @return \Codeception\Maybe
@@ -561,8 +561,7 @@ class CodeGuy extends \Codeception\AbstractGuy
      * Documentation taken from corresponding module.
      * ----------------------------------------------
      *
-     * @param \Phar $phar
-     * @param       $compress
+     *
      * @see Codeception\Module\BuilderHelper::seeCompressed()
      * @return \Codeception\Maybe
      */
@@ -698,6 +697,43 @@ class CodeGuy extends \Codeception\AbstractGuy
      */
     public function setRuntimeDirectory($path) {
         $this->scenario->addStep(new \Codeception\Step\Action('setRuntimeDirectory', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+
+ 
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
+     *
+    * Conditional Assertion: Test won't be stopped on fail
+     * @see Codeception\Module\FileHelper::seeRightPathConvert()
+     * @return \Codeception\Maybe
+     */
+    public function canSeeRightPathConvert() {
+        $this->scenario->addStep(new \Codeception\Step\ConditionalAssertion('seeRightPathConvert', func_get_args()));
+        if ($this->scenario->running()) {
+            $result = $this->scenario->runStep();
+            return new Maybe($result);
+        }
+        return new Maybe();
+    }
+    /**
+     * This method is generated.
+     * Documentation taken from corresponding module.
+     * ----------------------------------------------
+     *
+     *
+     * @see Codeception\Module\FileHelper::seeRightPathConvert()
+     * @return \Codeception\Maybe
+     */
+    public function seeRightPathConvert() {
+        $this->scenario->addStep(new \Codeception\Step\Assertion('seeRightPathConvert', func_get_args()));
         if ($this->scenario->running()) {
             $result = $this->scenario->runStep();
             return new Maybe($result);

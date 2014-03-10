@@ -18,12 +18,12 @@ use index0h\phar\base\FileEvent;
 class Fixer extends Component
 {
     /** @type array RegExp patterns to replace `from` => `to`. */
-    public $replace = ['/(\s)realpath\(/us' => '\1ltrim('];
+    public $replace = ['/(\s)realpath\(/us' => '\1\\index0h\\phar\\helpers\\FileHelper::realPath('];
 
     /**
      * @inheritdoc
      */
-    protected $match = ['/.*\.php/s'];
+    protected $match = ['/(?<!src.helpers.FileHelper)\.php/s'];
 
     /**
      * @inheritdoc

@@ -14,9 +14,6 @@ return [
     'folders' => ['@app/src', '@app/vendor'],
     'files' => ['.test.php'],
     'components' => [
-        'fixer' => [
-            'class' => 'index0h\\phar\\components\\php\\Fixer',
-            'match' => '/.*\.php/s'
-        ]
+        'fixer' => ['class' => 'index0h\\phar\\components\\php\\Fixer']
     ]
 ];

@@ -109,15 +109,15 @@ Removes all whitespaces form php files by php_strip_whitespace.
 
 ### Writing own component
 
-Simply create class that extends index0h\yii\phar\base\Component and implement processFile method.
+Simply create class that extends index0h\phar\base\Component and implement processFile method.
 
 For example minimize component:
 
 ```php
-namespace index0h\yii\phar\components\php;
+namespace index0h\phar\components\php;
 
-use index0h\yii\phar\base\Component;
-use index0h\yii\phar\base\FileEvent;
+use index0h\phar\base\Component;
+use index0h\phar\base\FileEvent;
 
 /**
  * Removes whitespace and comments from php files.

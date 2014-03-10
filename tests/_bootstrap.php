@@ -5,6 +5,8 @@
  * @license   https://raw.github.com/index0h/yii2-phar/master/LICENSE
  */
 
+defined('ROOT_PATH') || define('ROOT_PATH', implode(DIRECTORY_SEPARATOR, [__DIR__, '..']));
+
 defined('YII_DEBUG') || define('YII_DEBUG', true);
 defined('YII_ENV') || define('YII_ENV', 'dev');
 
