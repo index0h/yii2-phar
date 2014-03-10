@@ -23,7 +23,7 @@ class FileHelper extends helpers\BaseFileHelper
     /**
      * @param string $path Path to convert.
      *
-     * @return mixed
+     * @return string
      */
     public static function realPath($path)
     {
@@ -31,9 +31,7 @@ class FileHelper extends helpers\BaseFileHelper
             return realpath($path);
         }
 
-        if (preg_match('/^(phar:\/{0,2})?(.*)?/u', $path, $matches) === 0) {
-            return false;
-        }
+        preg_match('/^(phar:\/{0,2})?(.*)?/u', $path, $matches);
 
         $path = self::resolveRelativeToGlobal($matches[2]);
         $path = self::resolveDots($path);
@@ -77,11 +75,13 @@ class FileHelper extends helpers\BaseFileHelper
 
     /**
      * @param string $path Path to file/folder.
+     *
+     * @return string
      */
     protected static function getPharPath($path)
     {
         $path = self::realPath($path);
-        $path = str_replace(self::PHAR_PREFIX, '', $path);
+        return str_replace(self::PHAR_PREFIX, '', $path);
     }
 
     /**
